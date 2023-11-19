@@ -12,10 +12,11 @@
     <!-- Hoverable Table rows -->
     <div class="card">
       <h5 class="card-header">User's list</h5>
-      <div class="table-responsive text-nowrap">
+      <div class="table-responsive text-nowrap p-3">
         <table class="table table-hover w-full" id="userTableId">
           <thead>
             <tr>
+              <th>#</th>
               <th>Email</th>
               <th>Api Key</th>
               <th>Type</th>
@@ -38,21 +39,38 @@
                 processing: true,
                 serverSide: true,
                 ajax: url,
-                columns: [{
+                columns: [
+                    {
                         render: function(data, type, row) {
-                            return "name";
+                          console.log(row);
+                            return "count";
                         },
                         targets: 0,
                     },
                     {
                         render: function(data, type, row) {
-                            return "Validity";
+                            return row.email;
                         },
                         targets: 0,
                     },
                     {
                         render: function(data, type, row) {
-                            return "Charge";
+                           const api_key = row.api_key ? row.api_key : "Not Set"; 
+                            return api_key;
+                        },
+                        targets: 0,
+                    },
+                    {
+                        render: function(data, type, row) {
+                          const role = row.roles[0].name;
+                            return role;
+                        },
+                        targets: 0,
+                    },
+                    {
+                        render: function(data, type, row) {
+                          const role = row.roles[0].name;
+                            return role;
                         },
                         targets: 0,
                     },
@@ -64,6 +82,8 @@
                     },
                 ]
             });
+
+            
         });
   	</script>
 @endpush
