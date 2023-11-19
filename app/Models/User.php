@@ -22,6 +22,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'api_key',
     ];
 
     /**
@@ -42,4 +43,15 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+
+    public function getUniqueApiKey()
+    {
+        $api_key = bin2hex(openssl_random_pseudo_bytes(20));
+        $user = User::where('api_key', $api_key)->first();
+        if ($user) {
+            return $this->getUniqueApiKey();
+        }
+        return $api_key;
+    }
 }

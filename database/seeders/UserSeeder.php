@@ -4,7 +4,6 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Role;
-use Spatie\Permission\Models\Permission;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 
@@ -26,5 +25,17 @@ class UserSeeder extends Seeder
         $adminUser->password = Hash::make('password');
         $adminUser->save();
         $adminUser->syncRoles($adminRole);
+
+
+        for ($index=0; $index < 50; $index++) { 
+            $user = new User();
+            $user->name = 'user'.$index;
+            $user->email = 'user' . $index . '@gmail.com';
+            $user->password = Hash::make('password');
+            $user->api_key = $user->getUniqueApiKey();
+            $user->save();
+            $user->syncRoles($userRole);
+        }
+
     }
 }
