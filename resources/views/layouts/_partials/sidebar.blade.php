@@ -2,7 +2,8 @@
   <div class="app-brand demo">
     <a href="index.html" class="app-brand-link">
       <span class="app-brand-logo demo">
-        <img src="{{asset('assets/logo/1.png')}}" height="80" weight="100%"/>
+        {{-- <img src="{{asset('assets/logo/1.png')}}" height="70" weight="100%"/> --}}
+        <i class="fa-regular fa-envelope" style="font-size:3rem"></i>
       </span>
       <span class="app-brand-text demo menu-text fw-bolder ms-2 text-uppercase">
         {{ config('app.name', 'Laravel') }}
