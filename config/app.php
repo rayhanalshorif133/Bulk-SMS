@@ -178,6 +178,9 @@ return [
         // Spatie
         Spatie\Permission\PermissionServiceProvider::class,
 
+        // DataTables
+        Yajra\DataTables\DataTablesServiceProvider::class,
+
     ],
 
     /*

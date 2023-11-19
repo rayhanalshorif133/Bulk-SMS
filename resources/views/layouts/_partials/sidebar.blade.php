@@ -1,3 +1,7 @@
+@php
+$currentRoute = Route::currentRouteName();
+@endphp
+
 <aside id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme">
   <div class="app-brand demo">
     <a href="index.html" class="app-brand-link">
@@ -19,8 +23,8 @@
 
   <ul class="menu-inner py-1">
     <!-- Dashboard -->
-    <li class="menu-item active">
-      <a href="index.html" class="menu-link">
+    <li class="menu-item @if( $currentRoute == 'user.dashboard') active  @endif">
+      <a href="{{route('user.dashboard')}}" class="menu-link">
         <i class="menu-icon tf-icons bx bx-home-circle"></i>
         <div data-i18n="Analytics">Dashboard</div>
       </a>
@@ -28,7 +32,7 @@
 
     <!-- Layouts -->
     
-    <li class="menu-item">
+    <li class="menu-item @if( $currentRoute == 'user.index') active open @endif">
       <a href="javascript:void(0);" class="menu-link menu-toggle">
         <i class="menu-icon tf-icons bx bx-user"></i>
         <div data-i18n="Layouts">Users</div>
@@ -40,8 +44,8 @@
             <div data-i18n="Add New">Add New</div>
           </a>
         </li>
-        <li class="menu-item">
-          <a href="#" class="menu-link">
+        <li class="menu-item @if( $currentRoute == 'user.index') active  @endif">
+          <a href="{{route('user.index')}}" class="menu-link">
             <div data-i18n="Add New">User List</div>
           </a>
         </li>
