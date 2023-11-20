@@ -83,7 +83,7 @@
                     },
                     {
                         render: function(data, type, row) {
-                            var actions = ` <div class="btn-group" role="group" aria-label="Basic example">
+                            var actions = `<div class="btn-group" role="group" aria-label="Basic example">
                                 <button type="button" class="btn btn-outline-info btn-sm" data-bs-toggle="modal" data-bs-target="#updateSenderInfo" 
                                 onClick="handleItemEditBtn(${row.id})">
                                 <i class="bx bx-edit-alt"></i>
@@ -104,6 +104,19 @@
 
         const handleItemEditBtn = (id) => {
           console.log(id);
+          $("#sender-info-id").val(id);
+
+
+          axios.get(`sender-info/${id}/fetch`)
+            .then(function(res){
+              console.log(res.data.data);
+              const data = res.data.data;
+              $("#update_user_id").val(data.user_id);
+              $("#updateSenderIDGenarateInput").val(data.sender_id);
+              $("#update_api_key").val(data.api_key);
+            });
+          
+
         };
 
         const handleItemDeleteBtn = (id) => {
@@ -137,6 +150,16 @@
               .then(function(res){
                 $("#senderIDGenarateInput").val(res.data.data);
                 $(".senderIDGenarateBtn").find('i').toggleClass('fa-spin');
+              });
+              
+          });
+
+          $(".updateSenderIDGenarateBtn").click(function(){
+            $(this).find('i').toggleClass('fa-spin');
+            axios.get('sender-info/sender-id-generate')
+              .then(function(res){
+                $("#updateSenderIDGenarateInput").val(res.data.data);
+                $(".updateSenderIDGenarateBtn").find('i').toggleClass('fa-spin');
               });
               
           });

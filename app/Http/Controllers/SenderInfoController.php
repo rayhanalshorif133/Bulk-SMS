@@ -28,6 +28,11 @@ class SenderInfoController extends Controller
         return view('sender-info.index', compact('users'));
     }
 
+    public function fetch($id){
+        $senderInfo = SenderInfo::select()->where('id',$id)->with('user')->first();
+        return $this->respondWithSuccess('Successfully fetch sender info', $senderInfo);
+    }
+
     public function create(Request $request){
         $validator = Validator::make($request->all(), [
             'user_id' => ['required'],
@@ -42,8 +47,35 @@ class SenderInfoController extends Controller
         
 
         try {
-
             $senderInfo = new SenderInfo();
+            $senderInfo->user_id =  $request->user_id;
+            $senderInfo->sender_id =  $request->sender_id;
+            $senderInfo->api_key =  $request->api_key;
+            $senderInfo->save();
+            flash()->addSuccess("Sender Info created successfully");
+          } catch (\Exception $e) {
+            flash()->addError($e->getMessage());
+          }
+          return redirect()->back();
+
+    }
+
+    public function update(Request $request){
+        $validator = Validator::make($request->all(), [
+            'user_id' => ['required'],
+            'sender_id' => ['required', 'string',  'min:8', 'max:255', 'unique:sender_infos,sender_id,' . $request->id],
+            'api_key' => ['required', 'string', 'min:5', 'max:255'],
+        ]);
+
+
+        if($validator->fails()) {
+            flash()->addError($validator->errors()->first());
+            return redirect()->back();
+        }
+        
+
+        try {
+            $senderInfo = SenderInfo::find($request->id);
             $senderInfo->user_id =  $request->user_id;
             $senderInfo->sender_id =  $request->sender_id;
             $senderInfo->api_key =  $request->api_key;

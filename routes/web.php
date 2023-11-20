@@ -60,7 +60,9 @@ Route::middleware('auth')
             Route::get('/', [SenderInfoController::class, 'index'])->name('index');
             Route::get('/sender-id-generate', [SenderInfoController::class, 'senderIdGenerate'])->name('sender-id-generate');
             Route::post('/', [SenderInfoController::class, 'create'])->name('create');
+            Route::put('/', [SenderInfoController::class, 'update'])->name('update');
             Route::delete('/{id}', [SenderInfoController::class, 'delete'])->name('delete');
+            Route::get('/{id}/fetch', [SenderInfoController::class, 'fetch'])->name('fetch');
         });
 
         // balance
