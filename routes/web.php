@@ -50,9 +50,9 @@ Route::middleware('auth')
 
         // user
         Route::name('user.')->prefix('users')->group(function () {
-            Route::get('/', [UserController::class, 'index'])->name('index');
-            Route::get('/fetch-by-name/{name}', [UserController::class, 'fetchByName'])->name('fetch-by-name');
             Route::get('/dashboard', [HomeController::class, 'index'])->name('dashboard');
+            Route::get('/', [UserController::class, 'index'])->name('index');
+            Route::get('/{id}/fetch', [UserController::class, 'fetch'])->name('fetch');
         });
         
         // sender-info
@@ -68,6 +68,11 @@ Route::middleware('auth')
         // balance
         Route::name('balance.')->prefix('balances')->group(function () {
             Route::get('/', [BalanceController::class, 'index'])->name('index');
+            Route::post('/', [BalanceController::class, 'store'])->name('store');
+            Route::put('/', [BalanceController::class, 'update'])->name('update');
+
+            Route::get('/fetch/sender-info/{id}/by-user', [BalanceController::class, 'senderInfoByUser'])->name('sender-info.by-user');
+
         });
         
         // fund
