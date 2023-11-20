@@ -11,7 +11,15 @@
     
     <!-- Hoverable Table rows -->
     <div class="card">
-      <h5 class="card-header">Sender's Information list</h5>
+      <div class="card-header">
+        <div class="d-flex justify-content-between">
+            <h5 class="mt-2">Sender's Information list</h5>
+            <button class="btn btn-sm btn-outline-primary" 
+            data-bs-toggle="modal" data-bs-target="#createNewSenderInfo">
+              Add New
+            </button>
+        </div>
+      </div>
       <div class="table-responsive text-nowrap p-3">
         <table class="table table-hover w-full" id="senderInfoTableId">
           <thead>
@@ -29,12 +37,18 @@
     </div>
     <!--/ Hoverable Table rows -->
 </div>
+@include('sender-info.create')
+@include('sender-info.update')
 @endsection
 @push('script')
   	<script>
         $(function(){
-            
-            url = '/sender-info';
+          handleDataTable();
+          handleSenderIDGenarateBtn();
+        });
+
+        const handleDataTable = () =>{
+          url = '/sender-info';
             table = $('#senderInfoTableId').DataTable({
                 processing: true,
                 serverSide: true,
@@ -69,14 +83,64 @@
                     },
                     {
                         render: function(data, type, row) {
-                            return "Actions";
+                            var actions = ` <div class="btn-group" role="group" aria-label="Basic example">
+                                <button type="button" class="btn btn-outline-info btn-sm" data-bs-toggle="modal" data-bs-target="#updateSenderInfo" 
+                                onClick="handleItemEditBtn(${row.id})">
+                                <i class="bx bx-edit-alt"></i>
+                                </button>
+                                <button type="button" class="btn btn-outline-danger btn-sm" 
+                                onClick="handleItemDeleteBtn(${row.id})">
+                                    <i class="bx bx-trash"></i>
+                                </button>
+                            </div>`;
+                            return actions;
                         },
                         targets: 0,
                     },
                 ]
             });
 
-            
-        });
+        };
+
+        const handleItemEditBtn = (id) => {
+          console.log(id);
+        };
+
+        const handleItemDeleteBtn = (id) => {
+             Swal.fire({
+              title: "Are you sure?",
+              text: "You won't be able to revert this!",
+              icon: "warning",
+              showCancelButton: true,
+              confirmButtonColor: "#3085d6",
+              cancelButtonColor: "#d33",
+              confirmButtonText: "Yes, delete it!"
+            }).then((result) => {
+              if (result.isConfirmed) {
+                axios.delete(`sender-info/${id}`)
+                  .then(function(res){
+                    Swal.fire({
+                      title: "Deleted!",
+                      text: "Your file has been deleted.",
+                      icon: "success"
+                    });
+                    location.reload();
+                  });
+              }
+            });
+        };
+
+        const handleSenderIDGenarateBtn = () => {
+          $(".senderIDGenarateBtn").click(function(){
+            $(this).find('i').toggleClass('fa-spin');
+            axios.get('sender-info/sender-id-generate')
+              .then(function(res){
+                $("#senderIDGenarateInput").val(res.data.data);
+                $(".senderIDGenarateBtn").find('i').toggleClass('fa-spin');
+              });
+              
+          });
+        };  
+        
   	</script>
 @endpush

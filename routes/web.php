@@ -51,12 +51,16 @@ Route::middleware('auth')
         // user
         Route::name('user.')->prefix('users')->group(function () {
             Route::get('/', [UserController::class, 'index'])->name('index');
+            Route::get('/fetch-by-name/{name}', [UserController::class, 'fetchByName'])->name('fetch-by-name');
             Route::get('/dashboard', [HomeController::class, 'index'])->name('dashboard');
         });
-
+        
         // sender-info
         Route::name('sender-info.')->prefix('sender-info')->group(function () {
             Route::get('/', [SenderInfoController::class, 'index'])->name('index');
+            Route::get('/sender-id-generate', [SenderInfoController::class, 'senderIdGenerate'])->name('sender-id-generate');
+            Route::post('/', [SenderInfoController::class, 'create'])->name('create');
+            Route::delete('/{id}', [SenderInfoController::class, 'delete'])->name('delete');
         });
 
         // balance

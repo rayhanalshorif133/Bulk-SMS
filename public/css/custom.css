@@ -1,3 +1,25 @@
 .w-full{
     width:100%!important;
 }
+
+.btn-sm{
+    height:2.2rem!important;
+}
+
+.required::after {
+    content: " *";
+    color: red;
+    font-weight: bold;
+}
+
+.optional::after {
+    content: " (optional)";
+    color: #999;
+    font-weight: normal;
+}
+
+.tk::after {
+    content: "৳";
+    color: #000;
+    font-weight: normal;
+}

@@ -18,4 +18,14 @@ class UserController extends Controller
             }
         return view('user.index');
     }
+
+
+    public function fetchByName($name = null){
+        if($name == null){
+            $users = User::all();
+        }else{
+            $users = User::select()->where('name', 'LIKE', "%{$name}%")->get();
+        }
+        return $this->respondWithSuccess('Successfully fetched user',$users);
+    }
 }

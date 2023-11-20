@@ -27,7 +27,7 @@ class UserSeeder extends Seeder
         $adminUser->syncRoles($adminRole);
 
 
-        for ($index=0; $index < 5; $index++) { 
+        for ($index=0; $index < 50; $index++) { 
             $user = new User();
             $user->name = 'user'.$index;
             $user->email = 'user' . $index . '@gmail.com';
