@@ -15,6 +15,7 @@ class CreateFundsTable extends Migration
     {
         Schema::create('funds', function (Blueprint $table) {
             $table->id();
+            $table->string('name')->unique()->comment('Bkash,Rocket,Nagad,Upay and others');
             $table->timestamps();
         });
     }
