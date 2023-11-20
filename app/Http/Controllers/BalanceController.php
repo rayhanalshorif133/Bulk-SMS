@@ -10,8 +10,9 @@ class BalanceController extends Controller
 {
     public function index(){
         if (request()->ajax()) {
-            $query = Balance::orderBy('created_at', 'desc')->with('roles')->get();
+            $query = Balance::orderBy('created_at', 'desc')->with('user','senderInfo')->get();
              return DataTables::of($query)
+             ->addIndexColumn()
              ->rawColumns(['action'])
              ->toJson();
             }

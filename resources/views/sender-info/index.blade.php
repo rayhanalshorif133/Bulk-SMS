@@ -5,22 +5,21 @@
             
             
     <h4 class="py-3 mb-4">
-      <span class="text-muted fw-light">Users /</span> User list
+      <span class="text-muted fw-light">Sender Information /</span> Sender list
     </h4>
     
     
     <!-- Hoverable Table rows -->
     <div class="card">
-      <h5 class="card-header">User's list</h5>
+      <h5 class="card-header">Sender's Information list</h5>
       <div class="table-responsive text-nowrap p-3">
-        <table class="table table-hover w-full" id="userTableId">
+        <table class="table table-hover w-full" id="senderInfoTableId">
           <thead>
             <tr>
               <th>#</th>
-              <th>Email</th>
-              <th>Api Key</th>
-              <th>Type</th>
-              <th>Status</th>
+              <th>User Name</th>
+              <th>Sender ID</th>
+              <th>API Key</th>
               <th>Actions</th>
             </tr>
           </thead>
@@ -34,21 +33,30 @@
 @push('script')
   	<script>
         $(function(){
-            url = '/users';
-            table = $('#userTableId').DataTable({
+            
+            url = '/sender-info';
+            table = $('#senderInfoTableId').DataTable({
                 processing: true,
                 serverSide: true,
                 ajax: url,
                 columns: [
                     {
                         render: function(data, type, row) {
-                          return row.DT_RowIndex;
+                            return row.DT_RowIndex;
                         },
                         targets: 0,
                     },
                     {
                         render: function(data, type, row) {
-                            return row.email;
+                          const name = row.user.name;
+                            return name;
+                        },
+                        targets: 0,
+                    },
+                    {
+                        render: function(data, type, row) {
+                           const sender_id = row.sender_id ? row.sender_id : "Not Set"; 
+                            return sender_id;
                         },
                         targets: 0,
                     },
@@ -56,20 +64,6 @@
                         render: function(data, type, row) {
                            const api_key = row.api_key ? row.api_key : "Not Set"; 
                             return api_key;
-                        },
-                        targets: 0,
-                    },
-                    {
-                        render: function(data, type, row) {
-                          const role = row.roles[0].name;
-                            return role;
-                        },
-                        targets: 0,
-                    },
-                    {
-                        render: function(data, type, row) {
-                          const role = row.roles[0].name;
-                            return role;
                         },
                         targets: 0,
                     },

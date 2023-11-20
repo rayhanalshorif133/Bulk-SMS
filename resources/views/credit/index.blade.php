@@ -5,21 +5,23 @@
             
             
     <h4 class="py-3 mb-4">
-      <span class="text-muted fw-light">Users /</span> User list
+      <span class="text-muted fw-light">Credit /</span> Credit's list
     </h4>
     
     
     <!-- Hoverable Table rows -->
     <div class="card">
-      <h5 class="card-header">User's list</h5>
+      <h5 class="card-header">Credit's list</h5>
       <div class="table-responsive text-nowrap p-3">
-        <table class="table table-hover w-full" id="userTableId">
+        <table class="table table-hover w-full" id="creditTableId">
           <thead>
             <tr>
               <th>#</th>
-              <th>Email</th>
-              <th>Api Key</th>
-              <th>Type</th>
+              <th>User Name</th>
+              <th>Sender ID</th>
+              <th>Fund Name</th>
+              <th>amount</th>
+              <th>Balance</th>
               <th>Status</th>
               <th>Actions</th>
             </tr>
@@ -34,8 +36,8 @@
 @push('script')
   	<script>
         $(function(){
-            url = '/users';
-            table = $('#userTableId').DataTable({
+            url = '/credit';
+            table = $('#creditTableId').DataTable({
                 processing: true,
                 serverSide: true,
                 ajax: url,
@@ -48,28 +50,37 @@
                     },
                     {
                         render: function(data, type, row) {
-                            return row.email;
+                            return row.user.name;
                         },
                         targets: 0,
                     },
                     {
                         render: function(data, type, row) {
-                           const api_key = row.api_key ? row.api_key : "Not Set"; 
-                            return api_key;
+                          return row.sender_info.sender_id;
                         },
                         targets: 0,
                     },
                     {
                         render: function(data, type, row) {
-                          const role = row.roles[0].name;
-                            return role;
+                          return row.fund.name;
                         },
                         targets: 0,
                     },
                     {
                         render: function(data, type, row) {
-                          const role = row.roles[0].name;
-                            return role;
+                          return row.amount;
+                        },
+                        targets: 0,
+                    },
+                    {
+                        render: function(data, type, row) {
+                          return row.balance;
+                        },
+                        targets: 0,
+                    },
+                    {
+                        render: function(data, type, row) {
+                          return row.status;
                         },
                         targets: 0,
                     },

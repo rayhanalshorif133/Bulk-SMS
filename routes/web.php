@@ -6,7 +6,9 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\SenderInfoController;
 use App\Http\Controllers\BalanceController;
+use App\Http\Controllers\FundController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\CreditController;
 use Illuminate\Support\Facades\Artisan;
 
 /*
@@ -42,23 +44,37 @@ Auth::routes();
 
 Route::get('login', [AuthController::class, 'userLogin'])->name('user.login');
 
-Route::name('user.')
-    ->middleware('auth')
-    ->group(function () {
+
+Route::middleware('auth')
+    ->group(function(){
+
+        // user
+        Route::name('user.')->prefix('users')->group(function () {
+            Route::get('/', [UserController::class, 'index'])->name('index');
+            Route::get('/dashboard', [HomeController::class, 'index'])->name('dashboard');
+        });
+
+        // sender-info
+        Route::name('sender-info.')->prefix('sender-info')->group(function () {
+            Route::get('/', [SenderInfoController::class, 'index'])->name('index');
+        });
+
+        // balance
+        Route::name('balance.')->prefix('balances')->group(function () {
+            Route::get('/', [BalanceController::class, 'index'])->name('index');
+        });
+        
+        // fund
+        Route::name('fund.')->prefix('fund')->group(function () {
+            Route::get('/', [FundController::class, 'index'])->name('index');
+        });
+
+        // credit
+        Route::name('credit.')->prefix('credit')->group(function () {
+            Route::get('/', [CreditController::class, 'index'])->name('index');
+        });
+
+    });
     
-    
-    Route::get('/dashboard', [HomeController::class, 'index'])->name('dashboard');
-    Route::get('/users', [UserController::class, 'index'])->name('index');
 
-
-    
-    
-});
-
-
-
-Route::get('balance', [BalanceController::class, 'index'])->name('balance.index');
-Route::get('sender-info', [SenderInfoController::class, 'index'])->name('sender-info.index');
-Route::get('fund', [SenderInfoController::class, 'index'])->name('fund.index');
-Route::get('credit', [SenderInfoController::class, 'index'])->name('credit.index');
 

@@ -20,5 +20,20 @@ class Credit extends Model
         'note',
         'status',
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function senderInfo()
+    {
+        return $this->belongsTo(SenderInfo::class);
+    }
+
+    public function fund()
+    {
+        return $this->belongsTo(Fund::class);
+    }
     
 }

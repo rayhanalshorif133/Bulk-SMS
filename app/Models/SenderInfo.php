@@ -16,6 +16,12 @@ class SenderInfo extends Model
     ];
 
 
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+
     public function getUniqueApiKey()
     {
         $api_key = bin2hex(openssl_random_pseudo_bytes(20));

@@ -12,6 +12,7 @@ class UserController extends Controller
         if (request()->ajax()) {
             $query = User::orderBy('created_at', 'desc')->with('roles')->get();
              return DataTables::of($query)
+             ->addIndexColumn()
              ->rawColumns(['action'])
              ->toJson();
             }
