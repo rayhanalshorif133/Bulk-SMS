@@ -122,6 +122,16 @@
     <script src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.10.22/js/dataTables.bootstrap4.min.js"></script>
 
+    <script>
+      $(function(){
+        $(".dropdown-toggle").click(function(){
+          $(this).toggleClass('show');
+          $(".dropdown-menu").toggleClass('show');
+          $(".dropdown-menu").attr('data-bs-popper','static');
+        })
+      });
+    </script>
+
     @stack('script')
     </body>
 </html>

@@ -30,7 +30,7 @@ $currentRoute = Route::currentRouteName();
       </a>
     </li>
 
-    <!-- Layouts -->
+    <!-- Users -->
     
     <li class="menu-item @if( $currentRoute == 'user.index') active open @endif">
       <a href="javascript:void(0);" class="menu-link menu-toggle">
@@ -51,7 +51,35 @@ $currentRoute = Route::currentRouteName();
         </li>
       </ul>
     </li>
-    
+    <!-- Balance -->
+    <li class="menu-item @if( $currentRoute == 'sender-info.index') active  @endif">
+      <a href="{{route('sender-info.index')}}" class="menu-link">
+        <i class="menu-icon tf-icons bx bxs-info-circle"></i>
+        <div data-i18n="Analytics">Sender Infos</div>
+      </a>
     </li>
+
+     <!-- Balance -->
+     <li class="menu-item @if( $currentRoute == 'balance.index') active  @endif">
+      <a href="{{route('balance.index')}}" class="menu-link">
+        <i class="menu-icon tf-icons bx bx-money"></i>
+        <div data-i18n="Analytics">Balance</div>
+      </a>
+    </li>
+    <!-- Found -->
+    <li class="menu-item @if( $currentRoute == 'fund.index') active  @endif">
+      <a href="{{route('fund.index')}}" class="menu-link">
+        <i class="menu-icon tf-icons bx bx-credit-card-front"></i>
+        <div data-i18n="Analytics">Fund</div>
+      </a>
+    </li>
+    <!-- Credit -->
+    <li class="menu-item @if( $currentRoute == 'credit.index') active  @endif">
+      <a href="{{route('credit.index')}}" class="menu-link">
+        <i class="menu-icon tf-icons bx bxs-bank"></i>
+        <div data-i18n="Analytics">Credit</div>
+      </a>
+    </li>
+    
   </ul>
 </aside>
