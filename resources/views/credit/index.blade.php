@@ -191,9 +191,9 @@
               $(".showUserSenderId").text(data.sender_info.sender_id);
               $(".showAmount").text(data.amount);
               $(".showBalance").text(data.balance);
+              $(".showTransactionId").text(data.transaction_id);
+              $(".showFundName").text(data.fund.name);
               $(".showNote").text(data.note);
-              $(".showFundName").text(data.fund.name);
-              $(".showFundName").text(data.fund.name);
             });
         };
 

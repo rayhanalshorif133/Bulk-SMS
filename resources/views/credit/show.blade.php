@@ -27,16 +27,16 @@
                     <h5 class="text-gray-400"><span class="showBalance"></span> SMS</h5>
                 </div>
                 <div class="d-flex mb-2">
-                    <h5 class="me-3 text-gray">Note :</h5>
-                    <h5 class="text-gray-400 showNote"></h5>
-                </div>
-                <div class="d-flex mb-2">
                     <h5 class="me-3 text-gray">Fund Name :</h5>
                     <h5 class="text-gray-400 showFundName"></h5>
                 </div>
                 <div class="d-flex mb-2">
                     <h5 class="me-3 text-gray">Transaction ID :</h5>
                     <h5 class="text-gray-400 showTransactionId"></h5>
+                </div>
+                <div class="d-flex mb-2">
+                    <h5 class="me-3 text-gray">Note :</h5>
+                    <h5 class="text-gray-400 showNote"></h5>
                 </div>
             </div>
             
