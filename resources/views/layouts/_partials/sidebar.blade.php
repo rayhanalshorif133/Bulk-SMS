@@ -31,26 +31,14 @@ $currentRoute = Route::currentRouteName();
     </li>
 
     <!-- Users -->
-    
-    <li class="menu-item @if( $currentRoute == 'user.index') active open @endif">
-      <a href="javascript:void(0);" class="menu-link menu-toggle">
-        <i class="menu-icon tf-icons bx bx-user"></i>
-        <div data-i18n="Layouts">Users</div>
+    <!-- Balance -->
+    <li class="menu-item @if( $currentRoute == 'user.index') active  @endif">
+      <a href="{{route('user.index')}}" class="menu-link">
+        <i class="menu-icon tf-icons bx bxs-user"></i>
+        <div data-i18n="Analytics">Users</div>
       </a>
-
-      <ul class="menu-sub">
-        <li class="menu-item">
-          <a href="#" class="menu-link">
-            <div data-i18n="Add New">Add New</div>
-          </a>
-        </li>
-        <li class="menu-item @if( $currentRoute == 'user.index') active  @endif">
-          <a href="{{route('user.index')}}" class="menu-link">
-            <div data-i18n="Add New">User List</div>
-          </a>
-        </li>
-      </ul>
     </li>
+    
     <!-- Balance -->
     <li class="menu-item @if( $currentRoute == 'sender-info.index') active  @endif">
       <a href="{{route('sender-info.index')}}" class="menu-link">
