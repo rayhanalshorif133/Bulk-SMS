@@ -85,6 +85,10 @@ Route::middleware('auth')
         // fund
         Route::name('fund.')->prefix('fund')->group(function () {
             Route::get('/', [FundController::class, 'index'])->name('index');
+            Route::post('/', [FundController::class, 'store'])->name('store');
+            Route::put('/', [FundController::class, 'update'])->name('update');
+            Route::get('/{id}/fetch', [FundController::class, 'fetch'])->name('fetch');
+            Route::delete('/{id}', [FundController::class, 'delete'])->name('delete');
         });
 
         // credit

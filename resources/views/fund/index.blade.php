@@ -27,6 +27,8 @@
     </div>
     <!--/ Hoverable Table rows -->
 </div>
+@include('fund.create')
+@include('fund.update')
 @endsection
 @push('script')
   	<script>
@@ -53,7 +55,17 @@
                     },
                     {
                         render: function(data, type, row) {
-                            return "Actions";
+                          var actions = `<div class="btn-group" role="group" aria-label="Basic example">
+                                <button type="button" class="btn btn-outline-info btn-sm" data-bs-toggle="modal" data-bs-target="#updateFund" 
+                                onClick="handleItemEditBtn(${row.id})">
+                                  <i class="bx bx-edit-alt"></i>
+                                </button>
+                                <button type="button" class="btn btn-outline-danger btn-sm" 
+                                onClick="handleItemDeleteBtn(${row.id})">
+                                    <i class="bx bx-trash"></i>
+                                </button>
+                            </div>`;
+                            return actions;
                         },
                         targets: 0,
                     },
@@ -62,5 +74,39 @@
 
             
         });
+
+
+
+        const handleItemEditBtn = (id) => {
+            $("#fund_id").val(id);             
+            axios.get(`/fund/${id}/fetch`).then(function(res){
+              const data = res.data.data;
+              $("#updateFundName").val(data.name);
+            });
+          };
+
+          const handleItemDeleteBtn = (id) => {
+             Swal.fire({
+              title: "Are you sure?",
+              text: "You won't be able to revert this!",
+              icon: "warning",
+              showCancelButton: true,
+              confirmButtonColor: "#3085d6",
+              cancelButtonColor: "#d33",
+              confirmButtonText: "Yes, delete it!"
+            }).then((result) => {
+              if (result.isConfirmed) {
+                axios.delete(`balances/${id}`)
+                  .then(function(res){
+                    Swal.fire({
+                      title: "Deleted!",
+                      text: "Your file has been deleted.",
+                      icon: "success"
+                    });
+                    location.reload();
+                  });
+              }
+            });
+        };
   	</script>
 @endpush
