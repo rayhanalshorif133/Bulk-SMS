@@ -30,3 +30,7 @@ input[type='number']::-webkit-outer-spin-button {
    -webkit-appearance: none;
    margin: 0;
 }
+
+.text-gray-400{
+    color:#464747;
+}

@@ -30,6 +30,7 @@ class UserController extends Controller
 
     public function create(Request $request){
         $validator = Validator::make($request->all(), [
+            'name' => ['required', 'min:1', 'max:20'],
             'email' => ['required', 'email',  'min:8', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'max:25','confirmed'],
             'api_key' => ['required', 'string'],
@@ -41,6 +42,7 @@ class UserController extends Controller
         }
         try {
             $user = new User();
+            $user->name =  $request->name;
             $user->email =  $request->email;
             $user->password = Hash::make($request->password);
             $user->api_key =  $request->api_key;

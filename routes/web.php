@@ -94,6 +94,10 @@ Route::middleware('auth')
         // credit
         Route::name('credit.')->prefix('credit')->group(function () {
             Route::get('/', [CreditController::class, 'index'])->name('index');
+            Route::post('/', [CreditController::class, 'store'])->name('store');
+            Route::put('/', [CreditController::class, 'update'])->name('update');
+            Route::get('/{id}/fetch', [CreditController::class, 'fetch'])->name('fetch');
+            Route::delete('/{id}', [CreditController::class, 'delete'])->name('delete');
         });
 
     });

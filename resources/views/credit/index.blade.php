@@ -42,12 +42,19 @@
 </div>
 
 @include('credit.create')
+@include('credit.show')
 @include('credit.update')
 @endsection
 @push('script')
   	<script>
         $(function(){
-            url = '/credit';
+          handleDataTable();
+          handleCreateCredit();
+        });
+
+
+        const handleDataTable = () =>{
+          url = '/credit';
             table = $('#creditTableId').DataTable({
                 processing: true,
                 serverSide: true,
@@ -91,20 +98,128 @@
                     },
                     {
                         render: function(data, type, row) {
-                          return row.status;
+                          var status = "";
+                          if(row.status == 'active'){
+                            status = `<span class="badge bg-label-primary">${row.status}</span>`
+                          }else{
+                            status = `<span class="badge bg-label-danger">${row.status}</span>`
+                          }
+                          return status;
                         },
                         targets: 0,
                     },
                     {
                         render: function(data, type, row) {
-                            return "Actions";
+                          var actions = `<div class="btn-group" role="group" aria-label="Basic example">
+                              <button type="button" class="btn btn-outline-success btn-sm" data-bs-toggle="modal" data-bs-target="#showCredit" 
+                                onClick="handleItemShowBtn(${row.id})">
+                                <i class='bx bxs-show' ></i>
+                                </button>
+                                <button type="button" class="btn btn-outline-info btn-sm" data-bs-toggle="modal" data-bs-target="#updateBalance" 
+                                onClick="handleItemEditBtn(${row.id})">
+                                <i class="bx bx-edit-alt"></i>
+                                </button>
+                                <button type="button" class="btn btn-outline-danger btn-sm" 
+                                onClick="handleItemDeleteBtn(${row.id})">
+                                    <i class="bx bx-trash"></i>
+                                </button>
+                            </div>`;
+                            return actions;
                         },
                         targets: 0,
                     },
                 ]
             });
+        };
 
-            
-        });
+
+        const handleCreateCredit = () => {
+            $("#selected_user").on('change',function(){
+              const id = $(this).val();
+              $("#appendSenderOptions").html('');
+              var html = "";
+              axios.get(`/balances/fetch/sender-info/${id}/by-user`).then(function(res){
+                const data = res.data.data;
+                if(data.length > 0){
+                  html +=  `<option disabled selected value="0">Select a sender ID</option>`;
+                  data.map((item) => {
+                    html += `<option value="${item.id}">${item.sender_id}</option>`;
+                  });
+                  $("#appendSenderOptions").append(html);
+                }else{
+                  
+                  html = `<option disabled selected>No Sender ID</option>`;
+                  $("#appendSenderOptions").append(html);
+                }
+              });
+            });
+        };
+
+
+
+        const handleItemEditBtn = (id) => {
+          axios.get(`/balances/fetch/${id}`).then(function(res){
+            const balance = res.data.data?.balance;
+            const senderInfo = res.data.data?.senderInfo;
+            $("#updateBalanceID").val(id);             
+            $("#selected_update_user").val(balance.user.name);
+            $("#updateSmsBalance").val(balance.balance);
+            $("#updateAmount").val(balance.amount);
+            const date = moment(balance.expired_at).format('YYYY-MM-DD');
+            $("#modifyExpiredDate").val(date);
+            $("#modifyStatus").val(balance.status);
+            var html = "";
+            // html +=  `<option disabled selected value="0">Select a sender ID</option>`;
+              senderInfo.map((item) => {
+                // sender_info_id
+                if(balance.sender_info_id == item.id){
+                  html += `<option value="${item.id}" selected>${item.sender_id}</option>`;
+                }else{
+                  html += `<option value="${item.id}">${item.sender_id}</option>`;
+                }
+                });
+              $("#updateAppendSenderOptions").html(html);
+          });
+        };
+
+        const handleItemShowBtn = (id) => {
+          axios.get(`/credit/${id}/fetch`)
+            .then((res)=>{
+              console.log(res.data.data);
+              const data = res.data.data;
+              $(".showUserName").text(data.user.name);
+              $(".showUserSenderId").text(data.sender_info.sender_id);
+              $(".showAmount").text(data.amount);
+              $(".showBalance").text(data.balance);
+              $(".showNote").text(data.note);
+              $(".showFundName").text(data.fund.name);
+              $(".showFundName").text(data.fund.name);
+            });
+        };
+
+        const handleItemDeleteBtn = (id) => {
+           Swal.fire({
+            title: "Are you sure?",
+            text: "You won't be able to revert this!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, delete it!"
+          }).then((result) => {
+            if (result.isConfirmed) {
+              axios.delete(`balances/${id}`)
+                .then(function(res){
+                  Swal.fire({
+                    title: "Deleted!",
+                    text: "Your file has been deleted.",
+                    icon: "success"
+                  });
+                  location.reload();
+                });
+            }
+          });
+        };
+
   	</script>
 @endpush

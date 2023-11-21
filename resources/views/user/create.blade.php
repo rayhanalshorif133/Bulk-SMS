@@ -13,6 +13,10 @@
                     <div class="g-2">
                         <div class="g-2 row">
                             <div class="col mb-3">
+                                <label for="name" class="form-label required">Username</label>
+                                <input class="form-control" id="name" required name="name" placeholder="Enter a name"/>
+                            </div>
+                            <div class="col mb-3">
                                 <label for="email" class="form-label required">Email</label>
                                 <input class="form-control" id="email" required name="email" placeholder="Enter a email"/>
                             </div>
@@ -22,7 +26,6 @@
                                     <option value="user" selected>User</option>
                                     <option value="admin">Admin</option>
                                 </select>
-                            
                             </div>
                         </div>
                         <div class="g-2 row">
