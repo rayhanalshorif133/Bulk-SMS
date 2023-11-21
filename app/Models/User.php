@@ -19,7 +19,6 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
-        'name',
         'email',
         'password',
         'api_key',
@@ -48,7 +47,7 @@ class User extends Authenticatable
 
     public function getUniqueApiKey()
     {
-        $api_key = bin2hex(openssl_random_pseudo_bytes(20));
+        $api_key = bin2hex(openssl_random_pseudo_bytes(10));
         $user = User::where('api_key', $api_key)->first();
         if ($user) {
             return $this->getUniqueApiKey();

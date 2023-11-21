@@ -44,7 +44,6 @@
   	<script>
         $(function(){
           handleDataTable();
-          handleSenderIDGenarateBtn();
         });
 
         const handleDataTable = () =>{
@@ -138,28 +137,7 @@
               }
             });
         };
-
-        const handleSenderIDGenarateBtn = () => {
-          $(".senderIDGenarateBtn").click(function(){
-            $(this).find('i').toggleClass('fa-spin');
-            axios.get('sender-info/sender-id-generate')
-              .then(function(res){
-                $("#senderIDGenarateInput").val(res.data.data);
-                $(".senderIDGenarateBtn").find('i').toggleClass('fa-spin');
-              });
-              
-          });
-
-          $(".updateSenderIDGenarateBtn").click(function(){
-            $(this).find('i').toggleClass('fa-spin');
-            axios.get('sender-info/sender-id-generate')
-              .then(function(res){
-                $("#updateSenderIDGenarateInput").val(res.data.data);
-                $(".updateSenderIDGenarateBtn").find('i').toggleClass('fa-spin');
-              });
-              
-          });
-        };  
+          
         
   	</script>
 @endpush

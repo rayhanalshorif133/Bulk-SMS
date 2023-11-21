@@ -11,7 +11,15 @@
     
     <!-- Hoverable Table rows -->
     <div class="card">
-      <h5 class="card-header">User's list</h5>
+      <div class="card-header">
+        <div class="d-flex justify-content-between">
+            <h5 class="mt-2">User's list</h5>
+            <button class="btn btn-sm btn-outline-primary" 
+              data-bs-toggle="modal" data-bs-target="#createNewUser">
+              Add New
+            </button>
+        </div>
+      </div>
       <div class="table-responsive text-nowrap p-3">
         <table class="table table-hover w-full" id="userTableId">
           <thead>
@@ -30,11 +38,18 @@
     </div>
     <!--/ Hoverable Table rows -->
 </div>
+@include('user.create')
+@include('user.update')
 @endsection
 @push('script')
   	<script>
         $(function(){
-            url = '/users';
+            handleDataTable();
+            handleUserApiKeyGenarateBtn();
+        });
+
+        const handleDataTable = () => {
+          url = '/users';
             table = $('#userTableId').DataTable({
                 processing: true,
                 serverSide: true,
@@ -68,15 +83,20 @@
                     },
                     {
                         render: function(data, type, row) {
-                          const role = row.roles[0].name;
-                            return role;
+                          var status = "";
+                          if(row.status == 'active'){
+                            status = `<span class="badge bg-label-primary">${row.status}</span>`
+                          }else{
+                            status = `<span class="badge bg-label-danger">${row.status}</span>`
+                          }
+                          return status;
                         },
                         targets: 0,
                     },
                     {
                         render: function(data, type, row) {
                           var actions = `<div class="btn-group" role="group" aria-label="Basic example">
-                                <button type="button" class="btn btn-outline-info btn-sm" data-bs-toggle="modal" data-bs-target="#updateSenderInfo" 
+                                <button type="button" class="btn btn-outline-info btn-sm" data-bs-toggle="modal" data-bs-target="#updateUser" 
                                 onClick="handleItemEditBtn(${row.id})">
                                 <i class="bx bx-edit-alt"></i>
                                 </button>
@@ -91,8 +111,66 @@
                     },
                 ]
             });
+        };
 
-            
-        });
+        const handleUserApiKeyGenarateBtn = () => {
+          $(".userApiKeyGenarateBtn").click(function(){
+            $(this).find('i').toggleClass('fa-spin');
+            axios.get('users/key-generate')
+              .then(function(res){
+                $("#user_api_key").val(res.data.data);
+                $(".userApiKeyGenarateBtn").find('i').toggleClass('fa-spin');
+              });   
+          });
+
+          $(".updateUserApiKeyGenarateBtn").click(function(){
+            $(this).find('i').toggleClass('fa-spin');
+            axios.get('users/key-generate')
+              .then(function(res){
+                $("#update_user_api_key").val(res.data.data);
+                $(".updateUserApiKeyGenarateBtn").find('i').toggleClass('fa-spin');
+              });
+              
+          });
+        };  
+
+        const handleItemEditBtn = (id) => {
+          $("#user_id").val(id);
+          axios.get(`users/${id}/fetch`)
+            .then(function(res){
+              const data = res.data.data;
+              const role = data.roles[0].name;
+              $("#updateEmail").val(data.email);
+              $("#updateUserRole").val(role);
+              $("#update_user_api_key").val(data.api_key);
+              $("#update_user_status").val(data.status);
+            });
+          
+
+        };
+
+        const handleItemDeleteBtn = (id) => {
+             Swal.fire({
+              title: "Are you sure?",
+              text: "You won't be able to revert this!",
+              icon: "warning",
+              showCancelButton: true,
+              confirmButtonColor: "#3085d6",
+              cancelButtonColor: "#d33",
+              confirmButtonText: "Yes, delete it!"
+            }).then((result) => {
+              if (result.isConfirmed) {
+                axios.delete(`sender-info/${id}`)
+                  .then(function(res){
+                    Swal.fire({
+                      title: "Deleted!",
+                      text: "Your file has been deleted.",
+                      icon: "success"
+                    });
+                    location.reload();
+                  });
+              }
+            });
+        };
   	</script>
 @endpush

@@ -27,15 +27,15 @@ class UserSeeder extends Seeder
         $adminUser->syncRoles($adminRole);
 
 
-        for ($index=0; $index < 2; $index++) { 
-            $user = new User();
-            $user->name = 'user'.$index;
-            $user->email = 'user' . $index . '@gmail.com';
-            $user->password = Hash::make('password');
-            $user->api_key = $user->getUniqueApiKey();
-            $user->save();
-            $user->syncRoles($userRole);
-        }
+        // for ($index=0; $index < 2; $index++) { 
+        //     $user = new User();
+        //     $user->name = 'user'.$index;
+        //     $user->email = 'user' . $index . '@gmail.com';
+        //     $user->password = Hash::make('password');
+        //     $user->api_key = $user->getUniqueApiKey();
+        //     $user->save();
+        //     $user->syncRoles($userRole);
+        // }
 
     }
 }

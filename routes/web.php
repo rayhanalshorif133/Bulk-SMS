@@ -53,6 +53,10 @@ Route::middleware('auth')
             Route::get('/dashboard', [HomeController::class, 'index'])->name('dashboard');
             Route::get('/', [UserController::class, 'index'])->name('index');
             Route::get('/{id}/fetch', [UserController::class, 'fetch'])->name('fetch');
+
+            Route::post('/', [UserController::class, 'create'])->name('create');
+            Route::put('/', [UserController::class, 'update'])->name('update');
+            Route::get('/key-generate', [UserController::class, 'keyGenerate'])->name('key-generate');
         });
         
         // sender-info
