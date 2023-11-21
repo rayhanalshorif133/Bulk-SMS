@@ -22,13 +22,8 @@
                             </select>
                         </div>
                         <div class="col mb-3">
-                            <label for="updateSenderIDGenarateInput" class="form-label required">Sender ID</label>
-                            <div class="d-flex">
-                                <input class="form-control" required name="sender_id" id="updateSenderIDGenarateInput" readonly placeholder="Genarate Sender ID" value=""/>
-                                <button type="button" class="mx-2 btn btn-sm btn-primary updateSenderIDGenarateBtn" data-bs-toggle="tooltip" data-bs-offset="0,4" data-bs-placement="top" data-bs-html="true" data-bs-original-title="Genarate Sender ID">
-                                    <i class='bx bx-loader-circle'></i>
-                                </button>
-                            </div>
+                            <label for="update_sender_id" class="form-label required">Sender ID</label>
+                            <input class="form-control" id="update_sender_id" required name="sender_id" placeholder="Enter sender id"/>
                         </div>
                         <div class="col mb-3">
                             <label for="update_api_key" class="form-label required">Api key</label>

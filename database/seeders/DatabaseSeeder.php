@@ -13,12 +13,12 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
+        // SenderInfoSeeder::class,
+        // BalanceSeeder::class,
         $this->call([
             UserSeeder::class,
-            SenderInfoSeeder::class,
-            BalanceSeeder::class,
             FundSeeder::class,
-            CreditSeeder::class,
+            // CreditSeeder::class,
         ]);
     }
 }

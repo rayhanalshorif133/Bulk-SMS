@@ -47,11 +47,12 @@
 @push('script')
   	<script>
         $(function(){
-            handeDataTable();
+            handleDataTable();
+            handleCreateBalance();
           });
 
 
-          const handeDataTable = () => {
+          const handleDataTable = () => {
             url = '/balances';
             table = $('#balanceTableId').DataTable({
                 processing: true,
@@ -91,7 +92,9 @@
                     },
                     {
                         render: function(data, type, row) {
-                          const expired_at = `<span>${moment(row.expired_at).format('h:mm:ss a')} <br/> ${moment(row.expired_at).format('MMM Do YYYY')} </span>`
+                          // ${moment(row.expired_at).format('h:mm:ss a')} 
+                          const expired_at = `<span> 
+                            ${moment(row.expired_at).format('Do MMM, YYYY')} </span>`
                           return expired_at;
                         },
                         targets: 0,
@@ -111,7 +114,7 @@
                     {
                         render: function(data, type, row) {
                           var actions = `<div class="btn-group" role="group" aria-label="Basic example">
-                                <button type="button" class="btn btn-outline-info btn-sm" data-bs-toggle="modal" data-bs-target="#updateSenderInfo" 
+                                <button type="button" class="btn btn-outline-info btn-sm" data-bs-toggle="modal" data-bs-target="#updateBalance" 
                                 onClick="handleItemEditBtn(${row.id})">
                                 <i class="bx bx-edit-alt"></i>
                                 </button>
@@ -125,6 +128,38 @@
                         targets: 0,
                     },
                 ]
+            });
+          };
+
+          const handleCreateBalance = () => {
+            $("#selected_user").on('change',function(){
+              const id = $(this).val();
+              $("#appendSenderOptions").html('');
+              var html = "";
+              axios.get(`/balances/fetch/sender-info/${id}/by-user`).then(function(res){
+                const data = res.data.data;
+                if(data.length > 0){
+                  html +=  `<option disabled selected value="0">Select a sender ID</option>`;
+                  data.map((item) => {
+                    html += `<option value="${item.id}">${item.sender_id}</option>`;
+                  });
+                  $("#appendSenderOptions").append(html);
+                }else{
+                  
+                  html = `<option disabled selected>No Sender ID</option>`;
+                  $("#appendSenderOptions").append(html);
+                }
+              });
+            });
+          };
+
+          const handleItemEditBtn = (id) => {
+            axios.get(`/balances/fetch/${id}`).then(function(res){
+              const balance = res.data.data?.balance;
+              const senderInfo = res.data.data?.senderInfo;
+              $("#updateBalanceID").val(id);             
+              $("#selected_update_user").val(balance.user_id);
+              console.log(senderInfo);
             });
           };
   	</script>

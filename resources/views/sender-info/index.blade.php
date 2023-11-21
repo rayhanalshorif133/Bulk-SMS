@@ -103,16 +103,12 @@
         };
 
         const handleItemEditBtn = (id) => {
-          console.log(id);
           $("#sender-info-id").val(id);
-
-
           axios.get(`sender-info/${id}/fetch`)
             .then(function(res){
-              console.log(res.data.data);
               const data = res.data.data;
               $("#update_user_id").val(data.user_id);
-              $("#updateSenderIDGenarateInput").val(data.sender_id);
+              $("#update_sender_id").val(data.sender_id);
               $("#update_api_key").val(data.api_key);
             });
           

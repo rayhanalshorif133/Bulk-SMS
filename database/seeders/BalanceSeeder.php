@@ -15,7 +15,7 @@ class BalanceSeeder extends Seeder
     public function run()
     {
         $balance = new Balance();
-        $balance->user_id = 1;
+        $balance->user_id = 2;
         $balance->sender_info_id = 1;
         $balance->balance = 300;
         $balance->amount = 40.20;

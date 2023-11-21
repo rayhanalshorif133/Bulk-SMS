@@ -72,6 +72,7 @@ Route::middleware('auth')
             Route::put('/', [BalanceController::class, 'update'])->name('update');
 
             Route::get('/fetch/sender-info/{id}/by-user', [BalanceController::class, 'senderInfoByUser'])->name('sender-info.by-user');
+            Route::get('/fetch/{id}/', [BalanceController::class, 'fetch'])->name('fetch');
 
         });
         

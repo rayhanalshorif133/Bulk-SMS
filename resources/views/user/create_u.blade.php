@@ -21,8 +21,13 @@
                             </select>
                         </div>
                         <div class="col mb-3">
-                            <label for="sender_id" class="form-label required">Sender ID</label>
-                            <input class="form-control" id="sender_id" required name="sender_id" placeholder="Enter sender id"/>
+                            <label for="senderID" class="form-label required">Sender ID</label>
+                            <div class="d-flex">
+                                <input class="form-control" required name="sender_id" id="senderIDGenarateInput" readonly placeholder="Genarate Sender ID" value=""/>
+                                <button type="button" class="mx-2 btn btn-sm btn-primary senderIDGenarateBtn" data-bs-toggle="tooltip" data-bs-offset="0,4" data-bs-placement="top" data-bs-html="true" data-bs-original-title="Genarate Sender ID">
+                                    <i class='bx bx-loader-circle'></i>
+                                </button>
+                            </div>
                         </div>
                         <div class="col mb-3">
                             <label for="api_key" class="form-label required">Api key</label>

@@ -7,6 +7,7 @@ use Yajra\DataTables\Facades\DataTables;
 use App\Models\Balance;
 use App\Models\User;
 use App\Models\SenderInfo;
+use Illuminate\Support\Facades\Validator;
 
 class BalanceController extends Controller
 {
@@ -27,12 +28,56 @@ class BalanceController extends Controller
         return view('balance.index', compact('users'));
     }
 
-    public function create(){
-        return view('balance.create');
+    public function store(Request $request){
+        
+        
+        $validator = Validator::make($request->all(), [
+            'user_id' => ['required'],
+            'sender_info_id' => ['required'],
+            'balance' => ['required'],
+            'amount' => ['required'],
+            'expired_date' => ['required'],
+            'status' => ['required'],
+        ]);
+
+        if($validator->fails()) {
+            flash()->addError($validator->errors()->first());
+            return redirect()->back();
+        }
+
+        
+
+        try {
+            $balance = new Balance();
+            $balance->user_id = $request->user_id;
+            $balance->sender_info_id = $request->sender_info_id;
+            $balance->balance = $request->balance;
+            $balance->amount = $request->amount;
+            $balance->expired_at = $request->expired_date;
+            $balance->status = $request->status;
+            $balance->save();
+            flash()->addSuccess("Balance created successfully");
+          } catch (\Exception $e) {
+            flash()->addError($e->getMessage());
+          }
+          return redirect()->back();
+        
     }
 
     public function senderInfoByUser($id){
         $senderInfo = SenderInfo::select()->where('user_id',$id)->get();
         return $this->respondWithSuccess('Successfully fetch sender info', $senderInfo);
+    }
+    
+    public function fetch($id){
+        $balance = Balance::find($id);
+        $senderInfo = SenderInfo::select()
+            ->where('user_id',$balance->user_id)
+            ->get();
+        $data = [
+            'balance' => $balance,
+            'senderInfo' => $senderInfo
+        ];
+        return $this->respondWithSuccess('Successfully fetch balance with sender info', $data);
     }
 }
