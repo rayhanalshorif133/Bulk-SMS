@@ -70,6 +70,7 @@ Route::middleware('auth')
             Route::get('/', [BalanceController::class, 'index'])->name('index');
             Route::post('/', [BalanceController::class, 'store'])->name('store');
             Route::put('/', [BalanceController::class, 'update'])->name('update');
+            Route::delete('/{id}', [BalanceController::class, 'delete'])->name('delete');
 
             Route::get('/fetch/sender-info/{id}/by-user', [BalanceController::class, 'senderInfoByUser'])->name('sender-info.by-user');
             Route::get('/fetch/{id}/', [BalanceController::class, 'fetch'])->name('fetch');

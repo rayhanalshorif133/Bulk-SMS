@@ -158,9 +158,49 @@
               const balance = res.data.data?.balance;
               const senderInfo = res.data.data?.senderInfo;
               $("#updateBalanceID").val(id);             
-              $("#selected_update_user").val(balance.user_id);
-              console.log(senderInfo);
+              $("#selected_update_user").val(balance.user.name);
+              $("#updateSmsBalance").val(balance.balance);
+              $("#updateAmount").val(balance.amount);
+              const date = moment(balance.expired_at).format('YYYY-MM-DD');
+              $("#modifyExpiredDate").val(date);
+              $("#modifyStatus").val(balance.status);
+              var html = "";
+
+              // html +=  `<option disabled selected value="0">Select a sender ID</option>`;
+                senderInfo.map((item) => {
+                  // sender_info_id
+                  if(balance.sender_info_id == item.id){
+                    html += `<option value="${item.id}" selected>${item.sender_id}</option>`;
+                  }else{
+                    html += `<option value="${item.id}">${item.sender_id}</option>`;
+                  }
+                  });
+                $("#updateAppendSenderOptions").html(html);
             });
           };
+
+          const handleItemDeleteBtn = (id) => {
+             Swal.fire({
+              title: "Are you sure?",
+              text: "You won't be able to revert this!",
+              icon: "warning",
+              showCancelButton: true,
+              confirmButtonColor: "#3085d6",
+              cancelButtonColor: "#d33",
+              confirmButtonText: "Yes, delete it!"
+            }).then((result) => {
+              if (result.isConfirmed) {
+                axios.delete(`balances/${id}`)
+                  .then(function(res){
+                    Swal.fire({
+                      title: "Deleted!",
+                      text: "Your file has been deleted.",
+                      icon: "success"
+                    });
+                    location.reload();
+                  });
+              }
+            });
+        };
   	</script>
 @endpush
