@@ -37,7 +37,7 @@ class SenderInfoController extends Controller
         $validator = Validator::make($request->all(), [
             'user_id' => ['required'],
             'sender_id' => ['required', 'string',  'min:8', 'max:255', 'unique:sender_infos'],
-            'api_key' => ['required', 'string', 'min:5', 'max:255'],
+            'api_key' => ['required', 'string', 'min:5', 'max:255','unique:sender_infos'],
         ]);
 
         if($validator->fails()) {
