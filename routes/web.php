@@ -56,6 +56,7 @@ Route::middleware('auth')
 
             Route::post('/', [UserController::class, 'create'])->name('create');
             Route::put('/', [UserController::class, 'update'])->name('update');
+            Route::delete('/{id}', [UserController::class, 'delete'])->name('delete');
             Route::get('/key-generate', [UserController::class, 'keyGenerate'])->name('key-generate');
         });
         

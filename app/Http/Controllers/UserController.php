@@ -120,4 +120,15 @@ class UserController extends Controller
         }
         return $api_key;
     }
+
+    public function delete($id){
+        try{
+            $user = User::find($id);
+            $user->delete();
+            return $this->respondWithSuccess('User deleted successfully');
+        } catch (\Exception $e) {
+            return $this->respondWithError('Something went wrong.!',$e->getMessage());
+        }
+    }
+
 }

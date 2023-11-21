@@ -160,7 +160,7 @@
               confirmButtonText: "Yes, delete it!"
             }).then((result) => {
               if (result.isConfirmed) {
-                axios.delete(`sender-info/${id}`)
+                axios.delete(`users/${id}`)
                   .then(function(res){
                     Swal.fire({
                       title: "Deleted!",
