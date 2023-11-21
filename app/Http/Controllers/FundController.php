@@ -20,7 +20,7 @@ class FundController extends Controller
         return view('fund.index');
     }
 
-    public function create(Request $request){
+    public function store(Request $request){
         $validator = Validator::make($request->all(), [
             'name' => ['required', 'string',  'min:1', 'max:255', 'unique:funds'],
         ]);

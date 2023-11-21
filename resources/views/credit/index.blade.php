@@ -11,7 +11,15 @@
     
     <!-- Hoverable Table rows -->
     <div class="card">
-      <h5 class="card-header">Credit's list</h5>
+      <h5 class="card-header">
+        <div class="d-flex justify-content-between">
+          <h5 class="mt-2">Credit's list</h5>
+          <button class="btn btn-sm btn-outline-primary" 
+          data-bs-toggle="modal" data-bs-target="#createCredit">
+            Add New
+          </button>
+        </div>
+      </h5>
       <div class="table-responsive text-nowrap p-3">
         <table class="table table-hover w-full" id="creditTableId">
           <thead>
@@ -32,6 +40,9 @@
     </div>
     <!--/ Hoverable Table rows -->
 </div>
+
+@include('credit.create')
+@include('credit.update')
 @endsection
 @push('script')
   	<script>

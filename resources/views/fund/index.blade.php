@@ -11,7 +11,16 @@
     
     <!-- Hoverable Table rows -->
     <div class="card">
-      <h5 class="card-header">Fund's Information list</h5>
+      <h5 class="card-header">
+        <div class="d-flex justify-content-between">
+          <h5 class="mt-2">Fund's Information list</h5>
+          <button class="btn btn-sm btn-outline-primary" 
+          data-bs-toggle="modal" data-bs-target="#createFund">
+            Add New
+          </button>
+        </div>
+      </h5>
+      
       <div class="table-responsive text-nowrap p-3">
         <table class="table table-hover w-full" id="fundTableId">
           <thead>
@@ -96,7 +105,7 @@
               confirmButtonText: "Yes, delete it!"
             }).then((result) => {
               if (result.isConfirmed) {
-                axios.delete(`balances/${id}`)
+                axios.delete(`fund/${id}`)
                   .then(function(res){
                     Swal.fire({
                       title: "Deleted!",
