@@ -115,7 +115,7 @@
                                 onClick="handleItemShowBtn(${row.id})">
                                 <i class='bx bxs-show' ></i>
                                 </button>
-                                <button type="button" class="btn btn-outline-info btn-sm" data-bs-toggle="modal" data-bs-target="#updateBalance" 
+                                <button type="button" class="btn btn-outline-info btn-sm" data-bs-toggle="modal" data-bs-target="#updateCredit" 
                                 onClick="handleItemEditBtn(${row.id})">
                                 <i class="bx bx-edit-alt"></i>
                                 </button>
@@ -158,21 +158,22 @@
 
 
         const handleItemEditBtn = (id) => {
-          axios.get(`/balances/fetch/${id}`).then(function(res){
-            const balance = res.data.data?.balance;
-            const senderInfo = res.data.data?.senderInfo;
-            $("#updateBalanceID").val(id);             
-            $("#selected_update_user").val(balance.user.name);
-            $("#updateSmsBalance").val(balance.balance);
-            $("#updateAmount").val(balance.amount);
-            const date = moment(balance.expired_at).format('YYYY-MM-DD');
-            $("#modifyExpiredDate").val(date);
-            $("#modifyStatus").val(balance.status);
+          $("#credit_id").val(id);
+          axios.get(`/credit/${id}/fetch`).then(function(res){
+            const data = res.data.data;
+            const senderInfos = data.senderInfos;
+            $("#updateCredit_id").val(id);             
+            $("#selected_update_user").val(data.user.name);
+            $("#updateSmsBalance").val(data.balance);
+            $("#updateAmount").val(data.amount);
+            $("#update_fund").val(data.fund_id);
+            $("#modifyStatus").val(data.status);
+            $("#modifyTransection").val(data.transaction_id);
+            $("#modifyNote").val(data.note);
             var html = "";
-            // html +=  `<option disabled selected value="0">Select a sender ID</option>`;
-              senderInfo.map((item) => {
+            senderInfos.map((item) => {
                 // sender_info_id
-                if(balance.sender_info_id == item.id){
+                if(data.sender_info_id == item.id){
                   html += `<option value="${item.id}" selected>${item.sender_id}</option>`;
                 }else{
                   html += `<option value="${item.id}">${item.sender_id}</option>`;
@@ -198,6 +199,7 @@
         };
 
         const handleItemDeleteBtn = (id) => {
+          console.log(id);
            Swal.fire({
             title: "Are you sure?",
             text: "You won't be able to revert this!",
@@ -208,7 +210,7 @@
             confirmButtonText: "Yes, delete it!"
           }).then((result) => {
             if (result.isConfirmed) {
-              axios.delete(`balances/${id}`)
+              axios.delete(`credit/${id}`)
                 .then(function(res){
                   Swal.fire({
                     title: "Deleted!",

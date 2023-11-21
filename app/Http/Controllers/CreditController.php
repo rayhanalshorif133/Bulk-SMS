@@ -76,8 +76,8 @@ class CreditController extends Controller
             'sender_info_id' => ['required'],
             'balance' => ['required'],
             'amount' => ['required'],
-            'expired_date' => ['required'],
-            'modifyStatus' => ['required'],
+            'status' => ['required'],
+            'transection_id' => ['required'],
         ]);
         
 
@@ -90,7 +90,6 @@ class CreditController extends Controller
 
         try {
             $credit = Credit::find($request->id);
-            $credit->user_id = $request->user_id;
             $credit->sender_info_id = $request->sender_info_id;
             $credit->fund_id = $request->fund_id;
             $credit->amount = $request->amount;
@@ -99,7 +98,7 @@ class CreditController extends Controller
             $credit->status = $request->status;
             $credit->note = $request->note;
             $credit->save();
-            flash()->addSuccess("Balance updated successfully");
+            flash()->addSuccess("Credit updated successfully");
           } catch (\Exception $e) {
             flash()->addError($e->getMessage());
           }
@@ -112,8 +111,17 @@ class CreditController extends Controller
         $credit = Credit::select()->where('id',$id)
             ->with('user','senderInfo','fund')
             ->first();
-            
+        $credit->senderInfos = SenderInfo::select()->where('user_id',$credit->user_id)->get();  
         return $this->respondWithSuccess('Successfully fetch credit', $credit);
     }
 
+    public function delete($id){
+        try{
+            $credit = Credit::find($id);
+            $credit->delete();
+            return $this->respondWithSuccess('credit deleted successfully');
+        } catch (\Exception $e) {
+            return $this->respondWithError('Something went wrong.!',$e->getMessage());
+        }
+    }
 }
