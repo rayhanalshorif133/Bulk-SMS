@@ -32,12 +32,14 @@ $currentRoute = Route::currentRouteName();
 
     <!-- Users -->
     <!-- Balance -->
+    @role('admin')
     <li class="menu-item @if( $currentRoute == 'user.index') active  @endif">
       <a href="{{route('user.index')}}" class="menu-link">
         <i class="menu-icon tf-icons bx bxs-user"></i>
         <div data-i18n="Analytics">Users</div>
       </a>
     </li>
+    @endrole
     
     <!-- Balance -->
     <li class="menu-item @if( $currentRoute == 'sender-info.index') active  @endif">
@@ -54,6 +56,7 @@ $currentRoute = Route::currentRouteName();
         <div data-i18n="Analytics">Balance</div>
       </a>
     </li>
+    @role('admin')
     <!-- Found -->
     <li class="menu-item @if( $currentRoute == 'fund.index') active  @endif">
       <a href="{{route('fund.index')}}" class="menu-link">
@@ -61,6 +64,7 @@ $currentRoute = Route::currentRouteName();
         <div data-i18n="Analytics">Fund</div>
       </a>
     </li>
+    @endrole
     <!-- Credit -->
     <li class="menu-item @if( $currentRoute == 'credit.index') active  @endif">
       <a href="{{route('credit.index')}}" class="menu-link">

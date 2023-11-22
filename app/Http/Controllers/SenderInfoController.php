@@ -7,18 +7,43 @@ use Yajra\DataTables\Facades\DataTables;
 use App\Models\SenderInfo;
 use App\Models\User;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Auth;
 
 class SenderInfoController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
+
     public function index(){
-        if (request()->ajax()) {
-            $query = SenderInfo::orderBy('created_at', 'desc')
-                ->with('user')->get();
-             return DataTables::of($query)
-             ->addIndexColumn()
-             ->rawColumns(['action'])
-             ->toJson();
+
+        if(Auth::user()->roles[0]->name == 'user'){
+            if (request()->ajax()) {
+                $query = SenderInfo::orderBy('created_at', 'desc')
+                    ->where('user_id',Auth::user()->id)
+                    ->with('user')
+                    ->get();
+                 return DataTables::of($query)
+                 ->addIndexColumn()
+                 ->rawColumns(['action'])
+                 ->toJson();
             }
+        }else{
+            if (request()->ajax()) {
+                $query = SenderInfo::orderBy('created_at', 'desc')
+                    ->with('user')
+                    ->get();
+                 return DataTables::of($query)
+                 ->addIndexColumn()
+                 ->rawColumns(['action'])
+                 ->toJson();
+            }
+        } 
+
+        
 
         $users = User::whereHas('roles', function ($query) {
                 $query->where('name', '!=', 'admin');

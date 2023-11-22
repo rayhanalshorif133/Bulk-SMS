@@ -14,13 +14,16 @@
       <div class="card-header">
         <div class="d-flex justify-content-between">
             <h5 class="mt-2">Sender's Information list</h5>
+            @role('admin')
             <button class="btn btn-sm btn-outline-primary" 
             data-bs-toggle="modal" data-bs-target="#createNewSenderInfo">
               Add New
             </button>
+            @endrole
         </div>
       </div>
       <div class="table-responsive text-nowrap p-3">
+        @role('admin')
         <table class="table table-hover w-full" id="senderInfoTableId">
           <thead>
             <tr>
@@ -33,6 +36,19 @@
           </thead>
           <tbody class="table-border-bottom-0"></tbody>
         </table>
+        @else
+        <table class="table table-hover w-full" id="senderInfoTableIdUser">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>User Name</th>
+              <th>Sender ID</th>
+              <th>API Key</th>
+            </tr>
+          </thead>
+          <tbody class="table-border-bottom-0"></tbody>
+        </table>
+        @endrole
       </div>
     </div>
     <!--/ Hoverable Table rows -->
@@ -47,11 +63,10 @@
         });
 
         const handleDataTable = () =>{
-          url = '/sender-info';
             table = $('#senderInfoTableId').DataTable({
                 processing: true,
                 serverSide: true,
-                ajax: url,
+                ajax: '/sender-info',
                 columns: [
                     {
                         render: function(data, type, row) {
@@ -93,6 +108,41 @@
                                 </button>
                             </div>`;
                             return actions;
+                        },
+                        targets: 0,
+                    },
+                ]
+            });
+
+            table = $('#senderInfoTableIdUser').DataTable({
+                processing: true,
+                serverSide: true,
+                ajax: '/sender-info',
+                columns: [
+                    {
+                        render: function(data, type, row) {
+                            return row.DT_RowIndex;
+                        },
+                        targets: 0,
+                    },
+                    {
+                        render: function(data, type, row) {
+                          const name = row.user.name;
+                            return name;
+                        },
+                        targets: 0,
+                    },
+                    {
+                        render: function(data, type, row) {
+                           const sender_id = row.sender_id ? row.sender_id : "Not Set"; 
+                            return sender_id;
+                        },
+                        targets: 0,
+                    },
+                    {
+                        render: function(data, type, row) {
+                           const api_key = row.api_key ? row.api_key : "Not Set"; 
+                            return api_key;
                         },
                         targets: 0,
                     },

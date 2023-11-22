@@ -8,10 +8,16 @@ use App\Models\User;
 use Illuminate\Support\Facades\Validator;
 use Spatie\Permission\Models\Role;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Auth;
 
 
 class UserController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     public function index(){
         if (request()->ajax()) {
             $query = User::orderBy('created_at', 'desc')->with('roles')->get();
@@ -25,7 +31,7 @@ class UserController extends Controller
 
     public function keyGenerate(){
         $keyGenerate = $this->getUniqueApiKey();
-        return $this->respondWithSuccess('Successfully genarate key', $keyGenerate);
+        return $this->respondWithSuccess('Successfully generate key', $keyGenerate);
     }
 
     public function create(Request $request){
