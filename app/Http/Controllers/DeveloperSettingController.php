@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 class DeveloperSettingController extends Controller
 {
     public function index(){
-        return view('developer-setting.index');
+
+        $base_url = url("");
+        return view('developer-setting.index',compact('base_url'));
     }
 }
