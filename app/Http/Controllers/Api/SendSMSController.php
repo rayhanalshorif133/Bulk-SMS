@@ -9,7 +9,6 @@ use App\Models\SMSLog;
 
 class SendSMSController extends Controller
 {
-    // http://localhost:3000/api/sendsms?api_key=1c9dbe844194a856241a&mobile_number=+8801323174104&text=hello%20world
     public function sendSMS(Request $request)
     {
         $findUser = User::select()->where('api_key',$request->api_key)->first();
