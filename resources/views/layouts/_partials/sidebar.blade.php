@@ -40,7 +40,7 @@ $currentRoute = Route::currentRouteName();
       </a>
     </li>
     @endrole
-    <!-- Balance -->
+    <!-- sender info -->
     <li class="menu-item @if( $currentRoute == 'sender-info.index') active  @endif">
       <a href="{{route('sender-info.index')}}" class="menu-link">
         <i class="menu-icon tf-icons bx bxs-info-circle"></i>
@@ -76,6 +76,12 @@ $currentRoute = Route::currentRouteName();
       <a href="{{route('send-sms.index')}}" class="menu-link">
         <i class="menu-icon tf-icons bx bxs-send"></i>
         <div data-i18n="Analytics">Send SMS</div>
+      </a>
+    </li>
+    <li class="menu-item @if( $currentRoute == 'send-sms.log') active  @endif">
+      <a href="{{route('send-sms.log')}}" class="menu-link">
+        <i class="menu-icon tf-icons bx bx-line-chart"></i>
+        <div data-i18n="Analytics">SMS Logs</div>
       </a>
     </li>
     <li class="menu-item @if( $currentRoute == 'developer-settings.index') active  @endif">

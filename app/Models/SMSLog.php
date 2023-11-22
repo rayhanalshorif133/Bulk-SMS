@@ -13,6 +13,7 @@ class SMSLog extends Model
     protected $fillable = [
         'user_id',
         'api_key',
+        'sender_id',
         'mobile_number',
         'our_api',
         'our_api_response',

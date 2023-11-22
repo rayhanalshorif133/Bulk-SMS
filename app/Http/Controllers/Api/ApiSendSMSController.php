@@ -7,46 +7,57 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\SMSLog;
 use App\Models\SenderInfo;
+use App\Models\Balance;
 
 class ApiSendSMSController extends Controller
 {
     public function sendSMS(Request $request)
     {
+        
 
-        if($request->type){
-            $findUser = User::select()->where('api_key',$request->api_key)->first();
-            if(!$findUser){
-                return $this->respondWithSuccess('Api key not found', [
-                    'api_key' => $request->api_key
-                ]);
-            }
-        }else{
-            $findUser = User::select()->where('api_key',$request->api_key)->first();
-            $findSenderInfo = SenderInfo::select()->where('user_id',$findUser->id)->first();
-            if(!$findSenderInfo){
-                return $this->respondWithSuccess('Api key not found', [
-                    'api_key' => $request->api_key
-                ]);
-            }
+        $findUser = User::select()->where('api_key',$request->api_key)->first();
+        if(!$findUser){
+            return $this->respondWithSuccess('Api key not found', [
+                'api_key' => $request->api_key
+            ]);
+        }
+        $findSenderInfo = SenderInfo::select()->where('user_id',$findUser->id)->first();
+        if(!$findSenderInfo){
+            return $this->respondWithSuccess('Sender Api key not found', [
+                'api_key' => $request->api_key
+            ]);
         }
         
 
 
         try {
 
-            // send sms:start
+            $findBalance = Balance::select()->where('user_id',$findUser->id)->first();
 
+
+            if(!$findBalance || (int)$findBalance->balance <= 0){
+                if (!$request->expectsJson()) {
+                    flash()->addError('Insufficient balance');
+                    return redirect()->back();
+                }else{
+                    $customer_response = [
+                        'code' => 201,
+                        'msg'=> 'Insufficient balance',
+                    ];
+                    return response()->json($customer_response);
+                }
+            }
+
+            // send sms:start
                 $post_body = array(
-                    'api_key' => $request->type? $findUser->api_key : $findSenderInfo->api_key,
+                    'api_key' => $findSenderInfo->api_key,
                     'type' => 'text',
                     'contacts' => $request->mobile_number,
                     'senderid' => $findSenderInfo->sender_id,
                     'msg' => $request->text,
                 );
 
-                $curl = curl_init();
-
-                
+                $curl = curl_init();               
 
                 curl_setopt_array($curl, array(
                   CURLOPT_URL => 'https://msg.elitbuzz-bd.com/smsapi',
@@ -65,21 +76,50 @@ class ApiSendSMSController extends Controller
                 curl_close($curl);
 
 
-            // send sms:end
+            // send sms:end 1003 error
+
+          
+
 
             $smsLog = new SMSLog();
+            if($response != 1003){
+                // balance
+                $findBalance->balance = (int)$findBalance->balance - 1;
+                $findBalance->save();
+                $customer_response = [
+                    'code' => 200,
+                    'msg'=> 'Successful sent SMS.',
+                ];
+
+                $smsLog->status = 1;
+            }else{
+                $customer_response = [
+                    'code' => 201,
+                    'msg'=> 'SMS Not Sent',
+                ];
+                $smsLog->status = 0;
+            }
+
+            
             $smsLog->user_id = $findUser->id;
-            $smsLog->api_key = $request->type? $findUser->api_key : $findSenderInfo->api_key;
+            $smsLog->api_key = $request->api_key;
+            $smsLog->sender_id = $findSenderInfo->sender_id;
             $smsLog->message = $request->text;
             $smsLog->mobile_number = $request->mobile_number;
-            $smsLog->our_api = "https://google.com/our-api-url";
-            $smsLog->our_api_response = 1;
+            $smsLog->our_api = "https://msg.elitbuzz-bd.com/smsapi";
+            $smsLog->our_api_response = $response;
             $smsLog->type = $request->type? $request->type : 2;
-            $smsLog->status = 1;
-            $smsLog->customer_response = "customer_response";
+            $smsLog->customer_response = json_encode($customer_response);
             $smsLog->created_date_time = now();
             $smsLog->save();
-            return $this->respondWithSuccess('Successfully send a msg',$smsLog);
+
+            if($request->type){
+                flash()->addSuccess('Successfully sent message');
+                return redirect()->back();
+            }else{
+                return response()->json($customer_response);
+            }
+            
           } catch (\Exception $e) {
             return $this->respondWithSuccess('Something went wrong',$e->getMessage());
           }

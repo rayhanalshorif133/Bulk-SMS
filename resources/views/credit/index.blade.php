@@ -31,7 +31,7 @@
               <th>amount</th>
               <th>Balance</th>
               <th>Status</th>
-              <th>Actions</th>
+              {{-- <th>Actions</th> --}}
             </tr>
           </thead>
           <tbody class="table-border-bottom-0"></tbody>
@@ -108,26 +108,26 @@
                         },
                         targets: 0,
                     },
-                    {
-                        render: function(data, type, row) {
-                          var actions = `<div class="btn-group" role="group" aria-label="Basic example">
-                              <button type="button" class="btn btn-outline-success btn-sm" data-bs-toggle="modal" data-bs-target="#showCredit" 
-                                onClick="handleItemShowBtn(${row.id})">
-                                <i class='bx bxs-show' ></i>
-                                </button>
-                                <button type="button" class="btn btn-outline-info btn-sm" data-bs-toggle="modal" data-bs-target="#updateCredit" 
-                                onClick="handleItemEditBtn(${row.id})">
-                                <i class="bx bx-edit-alt"></i>
-                                </button>
-                                <button type="button" class="btn btn-outline-danger btn-sm" 
-                                onClick="handleItemDeleteBtn(${row.id})">
-                                    <i class="bx bx-trash"></i>
-                                </button>
-                            </div>`;
-                            return actions;
-                        },
-                        targets: 0,
-                    },
+                    // {
+                    //     render: function(data, type, row) {
+                    //       var actions = `<div class="btn-group" role="group" aria-label="Basic example">
+                    //           <button type="button" class="btn btn-outline-success btn-sm" data-bs-toggle="modal" data-bs-target="#showCredit" 
+                    //             onClick="handleItemShowBtn(${row.id})">
+                    //             <i class='bx bxs-show' ></i>
+                    //             </button>
+                    //             <button type="button" class="btn btn-outline-info btn-sm" data-bs-toggle="modal" data-bs-target="#updateCredit" 
+                    //             onClick="handleItemEditBtn(${row.id})">
+                    //             <i class="bx bx-edit-alt"></i>
+                    //             </button>
+                    //             <button type="button" class="btn btn-outline-danger btn-sm" 
+                    //             onClick="handleItemDeleteBtn(${row.id})">
+                    //                 <i class="bx bx-trash"></i>
+                    //             </button>
+                    //         </div>`;
+                    //         return actions;
+                    //     },
+                    //     targets: 0,
+                    // },
                 ]
             });
         };

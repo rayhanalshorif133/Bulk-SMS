@@ -116,6 +116,7 @@ Route::middleware('auth')
             ->prefix('send-sms')->group(function () {
             Route::get('/', [SendSMSController::class, 'index'])->name('index');
             Route::post('/', [SendSMSController::class, 'sendSms'])->name('send');
+            Route::get('/log', [SendSMSController::class, 'smsLog'])->name('log');
         });
 
     });

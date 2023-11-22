@@ -29,7 +29,7 @@
                     @endrole
                     <div class="col-12 mb-3">
                         <label for="phone" class="form-label required">Phone Number</label>
-                        <input class="form-control" id="phone" required name="phone" value="+8801"/>
+                        <input class="form-control" id="phone" required name="phone" value="8801"/>
                     </div>
                     <div class="col-12 mb-3">
                         <label for="message" class="form-label required">Message</label>

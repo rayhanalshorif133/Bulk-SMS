@@ -17,6 +17,7 @@ class CreateSMSLogsTable extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained('users')->onUpdate('cascade')->onDelete('cascade');
             $table->string('api_key')->nullable();
+            $table->string('sender_id')->nullable();
             $table->string('mobile_number')->nullable();
             $table->longtext('message')->nullable();
             $table->string('our_api')->nullable();

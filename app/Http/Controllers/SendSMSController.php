@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Http;
+use App\Models\SMSLog;
 use App\Http\Controllers\Api\ApiSendSMSController;
+use Yajra\DataTables\Facades\DataTables;
+use Illuminate\Support\Facades\Auth;
 
 class SendSMSController extends Controller
 {
@@ -30,12 +32,38 @@ class SendSMSController extends Controller
             $request->request->add($addRequest);
             $apiSendSMSController = new ApiSendSMSController();
             $apiSendSMSController->sendSms($request);
-            flash()->addSuccess('Successfully sent message');
+            
             return redirect()->back();
         }else{
             flash()->addError('User not found');
             return redirect()->back();
         }
         
+    }
+
+    public function smsLog(){
+        if(Auth::user()->roles[0]->name == 'user'){
+            if (request()->ajax()) {
+                $query = SMSLog::orderBy('created_at', 'desc')
+                    ->where('user_id',Auth::user()->id)
+                    ->with('user')
+                    ->get();
+                 return DataTables::of($query)
+                 ->addIndexColumn()
+                 ->rawColumns(['action'])
+                 ->toJson();
+            }
+        }else{
+            if (request()->ajax()) {
+                $query = SMSLog::orderBy('created_at', 'desc')
+                    ->with('user')
+                    ->get();
+                 return DataTables::of($query)
+                 ->addIndexColumn()
+                 ->rawColumns(['action'])
+                 ->toJson();
+            }
+        } 
+        return view('send-sms.log');
     }
 }

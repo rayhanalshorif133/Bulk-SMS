@@ -14,12 +14,6 @@
       <div class="card-header">
         <div class="d-flex justify-content-between">
             <h5 class="mt-2">User's Balance list</h5>
-            @role('admin')
-            <button class="btn btn-sm btn-outline-primary" 
-              data-bs-toggle="modal" data-bs-target="#createNewBalance">
-              Add New
-            </button>
-            @endrole
         </div>
       </div>
       <div class="table-responsive text-nowrap p-3">
