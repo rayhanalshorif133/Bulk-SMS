@@ -9,6 +9,7 @@ use App\Http\Controllers\BalanceController;
 use App\Http\Controllers\FundController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\CreditController;
+use App\Http\Controllers\DeveloperSettingController;
 use Illuminate\Support\Facades\Artisan;
 
 /*
@@ -99,6 +100,15 @@ Route::middleware('auth')
             Route::put('/', [CreditController::class, 'update'])->name('update');
             Route::get('/{id}/fetch', [CreditController::class, 'fetch'])->name('fetch');
             Route::delete('/{id}', [CreditController::class, 'delete'])->name('delete');
+        });
+
+        Route::name('developer-settings.')
+            ->prefix('developer-settings')->group(function () {
+            Route::get('/', [DeveloperSettingController::class, 'index'])->name('index');
+            Route::middleware('role')->post('/', [DeveloperSettingController::class, 'store'])->name('store');
+            Route::middleware('role')->put('/', [DeveloperSettingController::class, 'update'])->name('update');
+            Route::middleware('role')->get('/{id}/fetch', [DeveloperSettingController::class, 'fetch'])->name('fetch');
+            Route::middleware('role')->delete('/{id}', [DeveloperSettingController::class, 'delete'])->name('delete');
         });
 
     });

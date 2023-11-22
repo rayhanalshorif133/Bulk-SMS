@@ -5,7 +5,7 @@
     <style type="text/css">
         body{
           margin-top: 150px;
-          background-color: #C4CCD9;
+          background-color: #CDD1D6;
         }
         .error-main{
           background-color: #fff;
@@ -36,6 +36,8 @@
             <div class="col-lg-8 col-12 col-sm-10 offset-lg-2 offset-sm-1">
               <h1 class="m-0">403</h1>
               <h6>Permission denied, please try again.</h6>
+              <a href="{{route('user.dashboard')}}" class="btn btn-sm btn-info me-2">Dashboard</a>
+              <a href="{{url()->previous()}}" class="btn btn-sm btn-danger me-2">Back</a>
             </div>
           </div>
         </div>

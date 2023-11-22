@@ -64,12 +64,18 @@ $currentRoute = Route::currentRouteName();
         <div data-i18n="Analytics">Fund</div>
       </a>
     </li>
-    @endrole
     <!-- Credit -->
     <li class="menu-item @if( $currentRoute == 'credit.index') active  @endif">
       <a href="{{route('credit.index')}}" class="menu-link">
         <i class="menu-icon tf-icons bx bxs-bank"></i>
         <div data-i18n="Analytics">Credit</div>
+      </a>
+    </li>
+    @endrole
+    <li class="menu-item @if( $currentRoute == 'developer-settings.index') active  @endif">
+      <a href="{{route('developer-settings.index')}}" class="menu-link">
+        <i class="menu-icon tf-icons bx bxs-customize"></i>
+        <div data-i18n="Analytics">Developer Settings</div>
       </a>
     </li>
     
