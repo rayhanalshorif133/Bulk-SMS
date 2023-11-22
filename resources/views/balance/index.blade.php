@@ -31,7 +31,6 @@
               <th>User Name</th>
               <th>Sender ID</th>
               <th>Balance</th>
-              <th>amount</th>
               <th>expired_at</th>
               <th>Status</th>
               <th>Actions</th>
@@ -47,7 +46,6 @@
               <th>User Name</th>
               <th>Sender ID</th>
               <th>Balance</th>
-              <th>amount</th>
               <th>expired_at</th>
               <th>Status</th>
             </tr>
@@ -102,12 +100,6 @@
                         targets: 0,
                     },
                     
-                    {
-                        render: function(data, type, row) {
-                          return row.amount;
-                        },
-                        targets: 0,
-                    },
                     {
                         render: function(data, type, row) {
                           // ${moment(row.expired_at).format('h:mm:ss a')} 
@@ -174,13 +166,6 @@
                     {
                         render: function(data, type, row) {
                           return row.balance;
-                        },
-                        targets: 0,
-                    },
-                    
-                    {
-                        render: function(data, type, row) {
-                          return row.amount;
                         },
                         targets: 0,
                     },

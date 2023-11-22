@@ -7,6 +7,7 @@ use Yajra\DataTables\Facades\DataTables;
 use App\Models\Fund;
 use App\Models\Credit;
 use App\Models\User;
+use App\Models\Balance;
 use App\Models\SenderInfo;
 use Illuminate\Support\Facades\Validator;
 
@@ -41,6 +42,7 @@ class CreditController extends Controller
             'amount' => ['required'],
             'fund_id' => ['required'],
             'transection_id' => ['required'],
+            'expired_date' => ['required'],
         ]);
 
         if($validator->fails()) {
@@ -61,6 +63,30 @@ class CreditController extends Controller
             $credit->status = $request->status;
             $credit->note = $request->note;
             $credit->save();
+
+
+            // balance
+            $findBalance = Balance::select()->where('user_id',$request->user_id)->first();
+            if($findBalance){
+                $balance = $findBalance;
+                $balance->user_id = $request->user_id;
+                $balance->sender_info_id = $request->sender_info_id;
+                $balance->balance = (int)$findBalance->balance + (int)$request->balance;
+                $balance->expired_at = $request->expired_date;
+                $balance->status = $request->status;
+            }else{
+                $balance = new Balance();
+                $balance->user_id = $request->user_id;
+                $balance->sender_info_id = $request->sender_info_id;
+                $balance->balance = $request->balance;
+                $balance->expired_at = $request->expired_date;
+                $balance->status = $request->status;
+            }
+            $balance->save();
+
+
+
+
             flash()->addSuccess("Credit created successfully");
           } catch (\Exception $e) {
             flash()->addError($e->getMessage());

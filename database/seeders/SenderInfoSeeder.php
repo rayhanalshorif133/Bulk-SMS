@@ -17,20 +17,9 @@ class SenderInfoSeeder extends Seeder
         
         $senderInfo = new SenderInfo();
         $senderInfo->user_id =  2;
-        $senderInfo->sender_id =  $this->generateRandomString(20);
-        $senderInfo->api_key =  $senderInfo->getUniqueApiKey();
+        $senderInfo->sender_id =  "8809612436500";
+        $senderInfo->api_key =  "C2008076616cf7bb7a6291.47303916";
         $senderInfo->save();
 
-    }
-
-
-    function generateRandomString($length = 25) {
-        $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-        $charactersLength = strlen($characters);
-        $randomString = '';
-        for ($i = 0; $i < $length; $i++) {
-            $randomString .= $characters[rand(0, $charactersLength - 1)];
-        }
-        return $randomString;
     }
 }

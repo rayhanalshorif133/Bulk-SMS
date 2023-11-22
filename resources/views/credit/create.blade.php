@@ -62,11 +62,13 @@
                             </select>
                         </div>
                         <div class="col mb-3">
-                            <label for="note" class="form-label optional">Note</label>
-                            <textarea class="form-control" row="3" id="note" placeholder="Enter a note" name="note" type="text"></textarea>
+                            <label for="expired_date" class="form-label required">Expired Date</label>
+                            <input class="form-control" id="expired_date" name="expired_date" type="date"/>
                         </div>
-                        
-                        
+                    </div>
+                    <div class="col mb-3">
+                        <label for="note" class="form-label optional">Note</label>
+                        <textarea class="form-control" row="3" id="note" placeholder="Enter a note" name="note" type="text"></textarea>
                     </div>
                 </div>
                 <div class="modal-footer">

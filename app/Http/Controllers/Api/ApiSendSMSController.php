@@ -36,8 +36,6 @@ class ApiSendSMSController extends Controller
 
             // send sms:start
 
-
-
                 $post_body = array(
                     'api_key' => $request->type? $findUser->api_key : $findSenderInfo->api_key,
                     'type' => 'text',

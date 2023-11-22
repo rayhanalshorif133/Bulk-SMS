@@ -18,7 +18,6 @@ class CreateBalancesTable extends Migration
             $table->foreignId('user_id')->constrained('users')->onUpdate('cascade')->onDelete('cascade');
             $table->foreignId('sender_info_id')->constrained('sender_infos')->onUpdate('cascade')->onDelete('cascade');
             $table->integer('balance')->comment('sms count');
-            $table->double('amount', 15, 2)->comment('Taka');
             $table->dateTime('expired_at');
             $table->string('status')->default('active')->enam('active','inactive');
             $table->timestamps();

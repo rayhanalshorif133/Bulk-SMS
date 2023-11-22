@@ -14,7 +14,6 @@ class Balance extends Model
         'user_id',
         'sender_info_id',
         'balance',
-        'amount',
         'expired_at',
         'status',
     ];
