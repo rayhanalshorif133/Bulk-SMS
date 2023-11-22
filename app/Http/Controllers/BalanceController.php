@@ -8,17 +8,32 @@ use App\Models\Balance;
 use App\Models\User;
 use App\Models\SenderInfo;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Auth;
 
 class BalanceController extends Controller
 {
     public function index(){
-        if (request()->ajax()) {
-            $query = Balance::orderBy('created_at', 'desc')->with('user','senderInfo')->get();
-             return DataTables::of($query)
-             ->addIndexColumn()
-             ->rawColumns(['action'])
-             ->toJson();
-        }
+
+        if(Auth::user()->roles[0]->name == 'user'){
+            if (request()->ajax()) {
+                $query = Balance::orderBy('created_at', 'desc')
+                ->where('user_id',Auth::user()->id)
+                ->with('user','senderInfo')->get();
+                 return DataTables::of($query)
+                 ->addIndexColumn()
+                 ->rawColumns(['action'])
+                 ->toJson();
+            }
+        }else{
+            if (request()->ajax()) {
+                $query = Balance::orderBy('created_at', 'desc')->with('user','senderInfo')->get();
+                 return DataTables::of($query)
+                 ->addIndexColumn()
+                 ->rawColumns(['action'])
+                 ->toJson();
+            }
+        } 
+        
 
         $users = User::whereHas('roles', function ($query) {
             $query->where('name', '!=', 'admin');

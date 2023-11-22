@@ -14,13 +14,16 @@
       <div class="card-header">
         <div class="d-flex justify-content-between">
             <h5 class="mt-2">User's Balance list</h5>
+            @role('admin')
             <button class="btn btn-sm btn-outline-primary" 
               data-bs-toggle="modal" data-bs-target="#createNewBalance">
               Add New
             </button>
+            @endrole
         </div>
       </div>
       <div class="table-responsive text-nowrap p-3">
+        @role('admin')
         <table class="table table-hover w-full" id="balanceTableId">
           <thead>
             <tr>
@@ -36,6 +39,22 @@
           </thead>
           <tbody class="table-border-bottom-0"></tbody>
         </table>
+        @else
+        <table class="table table-hover w-full" id="balanceTableIdUser">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>User Name</th>
+              <th>Sender ID</th>
+              <th>Balance</th>
+              <th>amount</th>
+              <th>expired_at</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody class="table-border-bottom-0"></tbody>
+        </table>
+        @endrole
       </div>
     </div>
     <!--/ Hoverable Table rows -->
@@ -53,11 +72,10 @@
 
 
           const handleDataTable = () => {
-            url = '/balances';
-            table = $('#balanceTableId').DataTable({
+            $('#balanceTableId').DataTable({
                 processing: true,
                 serverSide: true,
-                ajax: url,
+                ajax: '/balances',
                 columns: [
                     {
                         render: function(data, type, row) {
@@ -124,6 +142,66 @@
                                 </button>
                             </div>`;
                             return actions;
+                        },
+                        targets: 0,
+                    },
+                ]
+            });
+
+            $('#balanceTableIdUser').DataTable({
+                processing: true,
+                serverSide: true,
+                ajax: '/balances',
+                columns: [
+                    {
+                        render: function(data, type, row) {
+                          return row.DT_RowIndex;
+                        },
+                        targets: 0,
+                    },
+                    {
+                        render: function(data, type, row) {
+                            return row.user.name;
+                        },
+                        targets: 0,
+                    },
+                    {
+                        render: function(data, type, row) {
+                          return row.sender_info.sender_id;
+                        },
+                        targets: 0,
+                    },
+                    {
+                        render: function(data, type, row) {
+                          return row.balance;
+                        },
+                        targets: 0,
+                    },
+                    
+                    {
+                        render: function(data, type, row) {
+                          return row.amount;
+                        },
+                        targets: 0,
+                    },
+                    {
+                        render: function(data, type, row) {
+                          // ${moment(row.expired_at).format('h:mm:ss a')} 
+                          const expired_at = `<span> 
+                            ${moment(row.expired_at).format('Do MMM, YYYY')} </span>`
+                          return expired_at;
+                        },
+                        targets: 0,
+                    },
+                    {
+                        render: function(data, type, row) {
+                          var status = "";
+                          if(row.status == 'active'){
+                            status = `<span class="badge bg-label-primary">${row.status}</span>`
+                          }else{
+                            status = `<span class="badge bg-label-danger">${row.status}</span>`
+                          }
+                          return status;
                         },
                         targets: 0,
                     },
