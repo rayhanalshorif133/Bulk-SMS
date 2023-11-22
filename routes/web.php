@@ -10,6 +10,7 @@ use App\Http\Controllers\FundController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\CreditController;
 use App\Http\Controllers\DeveloperSettingController;
+use App\Http\Controllers\SendSMSController;
 use Illuminate\Support\Facades\Artisan;
 
 /*
@@ -74,7 +75,7 @@ Route::middleware('auth')
         });
 
         // balance
-        Route::name('balance.')->prefix('balances')->group(function () {
+        Route::middleware('role')->name('balance.')->prefix('balances')->group(function () {
             Route::get('/', [BalanceController::class, 'index'])->name('index');
             Route::middleware('role')->post('/', [BalanceController::class, 'store'])->name('store');
             Route::middleware('role')->put('/', [BalanceController::class, 'update'])->name('update');
@@ -94,7 +95,7 @@ Route::middleware('auth')
         });
 
         // credit
-        Route::middleware('role')->name('credit.')->prefix('credit')->group(function () {
+        Route::name('credit.')->prefix('credit')->group(function () {
             Route::get('/', [CreditController::class, 'index'])->name('index');
             Route::post('/', [CreditController::class, 'store'])->name('store');
             Route::put('/', [CreditController::class, 'update'])->name('update');
@@ -109,6 +110,12 @@ Route::middleware('auth')
             Route::middleware('role')->put('/', [DeveloperSettingController::class, 'update'])->name('update');
             Route::middleware('role')->get('/{id}/fetch', [DeveloperSettingController::class, 'fetch'])->name('fetch');
             Route::middleware('role')->delete('/{id}', [DeveloperSettingController::class, 'delete'])->name('delete');
+        });
+
+        Route::name('send-sms.')
+            ->prefix('send-sms')->group(function () {
+            Route::get('/', [SendSMSController::class, 'index'])->name('index');
+            Route::post('/', [SendSMSController::class, 'sendSms'])->name('send');
         });
 
     });

@@ -43,7 +43,6 @@
               <th>#</th>
               <th>User Name</th>
               <th>Sender ID</th>
-              <th>API Key</th>
             </tr>
           </thead>
           <tbody class="table-border-bottom-0"></tbody>
@@ -136,13 +135,6 @@
                         render: function(data, type, row) {
                            const sender_id = row.sender_id ? row.sender_id : "Not Set"; 
                             return sender_id;
-                        },
-                        targets: 0,
-                    },
-                    {
-                        render: function(data, type, row) {
-                           const api_key = row.api_key ? row.api_key : "Not Set"; 
-                            return api_key;
                         },
                         targets: 0,
                     },

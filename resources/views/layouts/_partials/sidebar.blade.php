@@ -4,7 +4,7 @@ $currentRoute = Route::currentRouteName();
 
 <aside id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme">
   <div class="app-brand demo">
-    <a href="index.html" class="app-brand-link">
+    <a href="{{route('user.dashboard')}}" class="app-brand-link">
       <span class="app-brand-logo demo">
         {{-- <img src="{{asset('assets/logo/1.png')}}" height="70" weight="100%"/> --}}
         <i class="fa-regular fa-envelope" style="font-size:3rem"></i>
@@ -40,7 +40,6 @@ $currentRoute = Route::currentRouteName();
       </a>
     </li>
     @endrole
-    
     <!-- Balance -->
     <li class="menu-item @if( $currentRoute == 'sender-info.index') active  @endif">
       <a href="{{route('sender-info.index')}}" class="menu-link">
@@ -48,7 +47,9 @@ $currentRoute = Route::currentRouteName();
         <div data-i18n="Analytics">Sender Infos</div>
       </a>
     </li>
+    
 
+    @role('admin')
      <!-- Balance -->
      <li class="menu-item @if( $currentRoute == 'balance.index') active  @endif">
       <a href="{{route('balance.index')}}" class="menu-link">
@@ -56,7 +57,6 @@ $currentRoute = Route::currentRouteName();
         <div data-i18n="Analytics">Balance</div>
       </a>
     </li>
-    @role('admin')
     <!-- Found -->
     <li class="menu-item @if( $currentRoute == 'fund.index') active  @endif">
       <a href="{{route('fund.index')}}" class="menu-link">
@@ -70,6 +70,12 @@ $currentRoute = Route::currentRouteName();
       <a href="{{route('credit.index')}}" class="menu-link">
         <i class="menu-icon tf-icons bx bxs-bank"></i>
         <div data-i18n="Analytics">Credit</div>
+      </a>
+    </li>
+    <li class="menu-item @if( $currentRoute == 'send-sms.index') active  @endif">
+      <a href="{{route('send-sms.index')}}" class="menu-link">
+        <i class="menu-icon tf-icons bx bxs-send"></i>
+        <div data-i18n="Analytics">Send SMS</div>
       </a>
     </li>
     <li class="menu-item @if( $currentRoute == 'developer-settings.index') active  @endif">
