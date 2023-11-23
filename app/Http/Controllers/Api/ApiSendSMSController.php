@@ -82,7 +82,7 @@ class ApiSendSMSController extends Controller
 
 
             $smsLog = new SMSLog();
-            if($response != 1003){
+            if(!is_numeric($response)){
                 // balance
                 $findBalance->balance = (int)$findBalance->balance - 1;
                 $findBalance->save();
