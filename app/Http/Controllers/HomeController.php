@@ -41,10 +41,10 @@ class HomeController extends Controller
                 ->first();
 
             $today_sent = $totalSmsSend->count();
-            $last_transaction = $last_transaction->amount;
-            $sms_balance = $getBalance->balance;
-            $today_portal_sent = $today_portal_sent;
-            $today_api_sent = $today_api_sent;
+            $last_transaction = $last_transaction? $last_transaction->amount : 0;
+            $sms_balance = $getBalance? $getBalance->balance : 0;
+            $today_portal_sent = $today_portal_sent? $getBalance->amount : 0;
+            $today_api_sent = $today_api_sent ? $getBalance->amount : 0;
         }else{
             $today_sent = 0;
             $last_transaction = 0;
