@@ -8,6 +8,7 @@ use App\Http\Controllers\Api\ApiSendSMSController;
 use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Support\Facades\Auth;
 
+
 class SendSMSController extends Controller
 {
     public function index(){
@@ -65,5 +66,10 @@ class SendSMSController extends Controller
             }
         } 
         return view('send-sms.log');
+    }
+
+    public function fetchLog($id){
+        $SMSLog = SMSLog::find($id);
+        return $this->respondWithSuccess('Send sms log fetch successfully',$SMSLog);
     }
 }

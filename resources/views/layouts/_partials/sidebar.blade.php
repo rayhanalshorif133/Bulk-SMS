@@ -29,49 +29,6 @@ $currentRoute = Route::currentRouteName();
         <div data-i18n="Analytics">Dashboard</div>
       </a>
     </li>
-
-    <!-- Users -->
-    <!-- Balance -->
-    @role('admin')
-    <li class="menu-item @if( $currentRoute == 'user.index') active  @endif">
-      <a href="{{route('user.index')}}" class="menu-link">
-        <i class="menu-icon tf-icons bx bxs-user"></i>
-        <div data-i18n="Analytics">Users</div>
-      </a>
-    </li>
-    @endrole
-    <!-- sender info -->
-    <li class="menu-item @if( $currentRoute == 'sender-info.index') active  @endif">
-      <a href="{{route('sender-info.index')}}" class="menu-link">
-        <i class="menu-icon tf-icons bx bxs-info-circle"></i>
-        <div data-i18n="Analytics">Sender Infos</div>
-      </a>
-    </li>
-    
-
-    @role('admin')
-     <!-- Balance -->
-     <li class="menu-item @if( $currentRoute == 'balance.index') active  @endif">
-      <a href="{{route('balance.index')}}" class="menu-link">
-        <i class="menu-icon tf-icons bx bx-money"></i>
-        <div data-i18n="Analytics">Balance</div>
-      </a>
-    </li>
-    <!-- Found -->
-    <li class="menu-item @if( $currentRoute == 'fund.index') active  @endif">
-      <a href="{{route('fund.index')}}" class="menu-link">
-        <i class="menu-icon tf-icons bx bx-credit-card-front"></i>
-        <div data-i18n="Analytics">Fund</div>
-      </a>
-    </li>
-    @endrole
-    <!-- Credit -->
-    <li class="menu-item @if( $currentRoute == 'credit.index') active  @endif">
-      <a href="{{route('credit.index')}}" class="menu-link">
-        <i class="menu-icon tf-icons bx bxs-bank"></i>
-        <div data-i18n="Analytics">Credit</div>
-      </a>
-    </li>
     <li class="menu-item @if( $currentRoute == 'send-sms.index') active  @endif">
       <a href="{{route('send-sms.index')}}" class="menu-link">
         <i class="menu-icon tf-icons bx bxs-send"></i>
@@ -84,12 +41,62 @@ $currentRoute = Route::currentRouteName();
         <div data-i18n="Analytics">SMS Logs</div>
       </a>
     </li>
+    <!-- Transactions -->
+    <li class="menu-item @if( $currentRoute == 'credit.index') active  @endif">
+      <a href="{{route('credit.index')}}" class="menu-link">
+        <i class="menu-icon tf-icons bx bxs-bank"></i>
+        <div data-i18n="Analytics">Transactions</div>
+      </a>
+    </li> 
+    @role('admin')
+     <!-- Balance -->
+     <li class="menu-item @if( $currentRoute == 'balance.index') active  @endif">
+      <a href="{{route('balance.index')}}" class="menu-link">
+        <i class="menu-icon tf-icons bx bx-money"></i>
+        <div data-i18n="Analytics">Balance</div>
+      </a>
+    </li>
+    @endrole
+
+    <!-- Users -->
+    <!-- Balance -->
+   
+    <!-- sender info -->
+    <li class="menu-item @if( $currentRoute == 'sender-info.index') active  @endif">
+      <a href="{{route('sender-info.index')}}" class="menu-link">
+        <i class="menu-icon tf-icons bx bxs-info-circle"></i>
+        <div data-i18n="Analytics">Sender Infos</div>
+      </a>
+    </li>
+    
+
+   
+    
+    
+    @role('admin')
+    <li class="menu-item @if( $currentRoute == 'user.index') active  @endif">
+      <a href="{{route('user.index')}}" class="menu-link">
+        <i class="menu-icon tf-icons bx bxs-user"></i>
+        <div data-i18n="Analytics">Users</div>
+      </a>
+    </li>
+    @endrole
     <li class="menu-item @if( $currentRoute == 'developer-settings.index') active  @endif">
       <a href="{{route('developer-settings.index')}}" class="menu-link">
         <i class="menu-icon tf-icons bx bxs-customize"></i>
         <div data-i18n="Analytics">Developer Settings</div>
       </a>
     </li>
+     
+    @role('admin')
+    <!-- Found -->
+    <li class="menu-item @if( $currentRoute == 'fund.index') active  @endif">
+      <a href="{{route('fund.index')}}" class="menu-link">
+        <i class="menu-icon tf-icons bx bx-credit-card-front"></i>
+        <div data-i18n="Analytics">Fund</div>
+      </a>
+    </li>
+    @endrole
     
   </ul>
 </aside>

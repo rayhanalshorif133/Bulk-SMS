@@ -117,6 +117,7 @@ Route::middleware('auth')
             Route::get('/', [SendSMSController::class, 'index'])->name('index');
             Route::post('/', [SendSMSController::class, 'sendSms'])->name('send');
             Route::get('/log', [SendSMSController::class, 'smsLog'])->name('log');
+            Route::get('/log/{id}/fetch', [SendSMSController::class, 'fetchLog'])->name('log.fetch');
         });
 
     });

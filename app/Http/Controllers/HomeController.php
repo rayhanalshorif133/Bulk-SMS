@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use App\Models\Balance;
+use App\Models\SMSLog;
+use App\Models\Credit;
 
 class HomeController extends Controller
 {
@@ -23,6 +26,34 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('dashboard');
+
+        $today = date('Y-m-d');
+
+        
+        if(Auth::user()->roles[0]->name == 'user'){
+            
+            $getBalance = Balance::select()->where('user_id',Auth::user()->id)->first();
+            $totalSmsSend = SMSLog::select()->where('user_id',Auth::user()->id)->whereDate('created_date_time',$today)->get();
+            $today_portal_sent = SMSLog::select()->where('user_id',Auth::user()->id)->whereDate('created_date_time',$today)->where('type',1)->count();
+            $today_api_sent = SMSLog::select()->where('user_id',Auth::user()->id)->whereDate('created_date_time',$today)->where('type',2)->count();
+            $last_transaction = Credit::select()->where('user_id',Auth::user()->id)
+                ->orderBy('created_at', 'desc')
+                ->first();
+
+            $today_sent = $totalSmsSend->count();
+            $last_transaction = $last_transaction->amount;
+            $sms_balance = $getBalance->balance;
+            $today_portal_sent = $today_portal_sent;
+            $today_api_sent = $today_api_sent;
+        }else{
+            $today_sent = 0;
+            $last_transaction = 0;
+            $sms_balance = 0;
+            $today_portal_sent = 0;
+            $today_api_sent = 0;
+        } 
+        
+        
+        return view('dashboard', compact('sms_balance','today_api_sent','today_sent','today_portal_sent','last_transaction'));
     }
 }

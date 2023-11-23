@@ -16,8 +16,8 @@ class CreateSenderInfosTable extends Migration
         Schema::create('sender_infos', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained('users')->onUpdate('cascade')->onDelete('cascade');
-            $table->string('sender_id')->unique();
-            $table->string('api_key')->unique();
+            $table->string('sender_id');
+            $table->string('api_key');
             $table->timestamps();
         });
     }

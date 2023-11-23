@@ -35,6 +35,7 @@
     </div>
     <!--/ Hoverable Table rows -->
 </div>
+@include('send-sms.showMessageModal')
 @endsection
 @push('script')
   	<script>
@@ -70,7 +71,20 @@
                     {
                         render: function(data, type, row) {
                           const message = row.message ? row.message : "Not Set"; 
-                            return message;
+
+                          // get 50 characters
+                          var message_50 = message.substring(0, 50);
+                          // get massage lenght
+                          const length = message.length;
+                          if(length > 50){
+                            message_50 = message_50 + " ...";
+                            message_50 = message_50 + `<a href="#" class="mx-2" data-bs-toggle="modal" data-bs-target="#showMessageModal" onclick="handleShowMessage(${row.id})">See More</a>`
+                          }
+                          return message_50;
+
+                          if(row.message){
+                            return `<button type="button" class="btn btn-sm btn-primary" >See More</button>`;
+                          }
                         },
                         targets: 0,
                     },
@@ -114,43 +128,17 @@
             
 
         };
+        
 
-        const handleItemEditBtn = (id) => {
-          $("#sender-info-id").val(id);
-          axios.get(`sender-info/${id}/fetch`)
+        const handleShowMessage = (id) => {
+          axios.get(`/send-sms/log/${id}/fetch`)
             .then(function(res){
               const data = res.data.data;
-              $("#update_user_id").val(data.user_id);
-              $("#update_sender_id").val(data.sender_id);
-              $("#update_api_key").val(data.api_key);
-            });
-          
-
-        };
-
-        const handleItemDeleteBtn = (id) => {
-             Swal.fire({
-              title: "Are you sure?",
-              text: "You won't be able to revert this!",
-              icon: "warning",
-              showCancelButton: true,
-              confirmButtonColor: "#3085d6",
-              cancelButtonColor: "#d33",
-              confirmButtonText: "Yes, delete it!"
-            }).then((result) => {
-              if (result.isConfirmed) {
-                axios.delete(`sender-info/${id}`)
-                  .then(function(res){
-                    Swal.fire({
-                      title: "Deleted!",
-                      text: "Your file has been deleted.",
-                      icon: "success"
-                    });
-                    location.reload();
-                  });
-              }
+              $('#message_details_show').text(data.message);
             });
         };
+
+        
           
         
   	</script>
