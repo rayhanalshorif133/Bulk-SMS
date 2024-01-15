@@ -75,7 +75,7 @@
                       />
                     </div>
                   </div>
-                  <span class="fw-semibold d-block mb-1">Today's Portal Sent</span>
+                  <span class="fw-semibold d-block mb-1">Sent From Portal</span>
                   <h3 class="card-title mb-2">{{$today_portal_sent}}</h3>
                 </div>
               </div>
@@ -92,7 +92,7 @@
                       />
                     </div>
                   </div>
-                  <span class="fw-semibold d-block mb-1">Today's Api Sent</span>
+                  <span class="fw-semibold d-block mb-1">Sent From Api</span>
                   <h3 class="card-title mb-2">{{$today_api_sent}}</h3>
                 </div>
               </div>

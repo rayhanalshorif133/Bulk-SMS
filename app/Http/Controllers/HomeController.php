@@ -34,8 +34,10 @@ class HomeController extends Controller
             
             $getBalance = Balance::select()->where('user_id',Auth::user()->id)->first();
             $totalSmsSend = SMSLog::select()->where('user_id',Auth::user()->id)->whereDate('created_date_time',$today)->get();
-            $today_portal_sent = SMSLog::select()->where('user_id',Auth::user()->id)->whereDate('created_date_time',$today)->where('type',1)->count();
-            $today_api_sent = SMSLog::select()->where('user_id',Auth::user()->id)->whereDate('created_date_time',$today)->where('type',2)->count();
+            $today_portal_sent = SMSLog::select()->where('user_id',Auth::user()->id)->whereDate('created_date_time',$today)
+            ->where('type',1)->count();
+            $today_api_sent = SMSLog::select()->where('user_id',Auth::user()->id)->whereDate('created_date_time',$today)
+            ->where('type',2)->count();
             $last_transaction = Credit::select()->where('user_id',Auth::user()->id)
                 ->orderBy('created_at', 'desc')
                 ->first();
@@ -43,8 +45,8 @@ class HomeController extends Controller
             $today_sent = $totalSmsSend->count();
             $last_transaction = $last_transaction? $last_transaction->amount : 0;
             $sms_balance = $getBalance? $getBalance->balance : 0;
-            $today_portal_sent = $today_portal_sent? $getBalance->amount : 0;
-            $today_api_sent = $today_api_sent ? $getBalance->amount : 0;
+            $today_portal_sent = $today_portal_sent? $today_portal_sent : 0;
+            $today_api_sent = $today_api_sent ? $today_api_sent : 0;
         }else{
             $today_sent = 0;
             $last_transaction = 0;
