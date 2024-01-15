@@ -37,6 +37,7 @@ class SendSMSController extends Controller
                 $request->request->add($addRequest);
                 $apiSendSMSController = new ApiSendSMSController();
                 $apiSendSMSController->sendSms($request);
+                flash()->addSuccess('Successfully sent message');
                 return redirect()->back();
             }else{
                 if($request->hasFile('phone_csv_file')){

@@ -29,7 +29,7 @@ class ApiSendSMSController extends Controller
                 'api_key' => $request->api_key
             ]);
         }
-        
+
 
 
         try {
@@ -59,7 +59,7 @@ class ApiSendSMSController extends Controller
                     'msg' => $request->text,
                 );
 
-                $curl = curl_init();               
+                $curl = curl_init();
 
                 curl_setopt_array($curl, array(
                   CURLOPT_URL => 'https://msg.elitbuzz-bd.com/smsapi',
@@ -80,7 +80,7 @@ class ApiSendSMSController extends Controller
 
             // send sms:end 1003 error
 
-          
+
 
 
             $smsLog = new SMSLog();
@@ -102,7 +102,7 @@ class ApiSendSMSController extends Controller
                 $smsLog->status = 0;
             }
 
-            
+
             $smsLog->user_id = $findUser->id;
             $smsLog->api_key = $request->api_key;
             $smsLog->sender_id = $findSenderInfo->sender_id;
@@ -116,17 +116,16 @@ class ApiSendSMSController extends Controller
             $smsLog->save();
 
             if($request->type){
-                flash()->addSuccess('Successfully sent message');
                 return redirect()->back();
             }else{
                 return response()->json($customer_response);
             }
-            
+
           } catch (\Exception $e) {
             return $this->respondWithSuccess('Something went wrong',$e->getMessage());
           }
           return redirect()->back();
 
-        
+
     }
 }
