@@ -52,7 +52,7 @@ Route::middleware('auth')
 
         // user
         Route::name('user.')
-            
+
             ->prefix('users')->group(function () {
             Route::get('/dashboard', [HomeController::class, 'index'])->name('dashboard');
             Route::middleware('role')->get('/', [UserController::class, 'index'])->name('index');
@@ -63,7 +63,7 @@ Route::middleware('auth')
             Route::middleware('role')->delete('/{id}', [UserController::class, 'delete'])->name('delete');
             Route::middleware('role')->get('/key-generate', [UserController::class, 'keyGenerate'])->name('key-generate');
         });
-        
+
         // sender-info
         Route::name('sender-info.')->prefix('sender-info')->group(function () {
             Route::get('/', [SenderInfoController::class, 'index'])->name('index');
@@ -84,7 +84,7 @@ Route::middleware('auth')
             Route::middleware('role')->get('/fetch/{id}/', [BalanceController::class, 'fetch'])->name('fetch');
 
         });
-        
+
         // fund
         Route::middleware('role')->name('fund.')->prefix('fund')->group(function () {
             Route::get('/', [FundController::class, 'index'])->name('index');
@@ -116,11 +116,12 @@ Route::middleware('auth')
             ->prefix('send-sms')->group(function () {
             Route::get('/', [SendSMSController::class, 'index'])->name('index');
             Route::post('/', [SendSMSController::class, 'sendSms'])->name('send');
+            Route::get('/csv-info/{id}/fetch', [SendSMSController::class, 'csvInfoFetch'])->name('csv-info-fetch');
             Route::get('/log', [SendSMSController::class, 'smsLog'])->name('log');
             Route::get('/log/{id}/fetch', [SendSMSController::class, 'fetchLog'])->name('log.fetch');
         });
 
     });
-    
+
 
 
