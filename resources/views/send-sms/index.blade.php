@@ -75,7 +75,7 @@
             </div>
         </div>
     </div>
-@include('send-sms.confirm_modal')
+    @include('send-sms.confirm_modal')
 @endsection
 @push('script')
     <script>
@@ -120,12 +120,32 @@
                 return;
             }
             const bulk_sms_file_id = current_url.split("bulk_sms_file_id=")[1];
-            console.log(bulk_sms_file_id);
             $("#sms_send_confrim").modal("show");
+            $("#phone_csv_file_id").val(bulk_sms_file_id);
             axios.get(`/send-sms/csv-info/${bulk_sms_file_id}/fetch`)
                 .then(function(response) {
                     const data = response.data.data;
-                    console.log(data);
+                    const numbers = data.numbers;
+                    $("#sms_balance").html(data.sms_balance);
+                    $("#sms_uploaded_number").html(data.sms_uploaded_number);
+                    $("#sms_cost").html(data.sms_cost);
+                    $("#sms_duplicates_number").html(data.sms_duplicates_number);
+
+                    // get unique numbers
+                    const unique_numbers = [...new Set(numbers)];
+                    let html = "";
+                    unique_numbers.forEach((item, index) => {
+                        // find count of same item
+                        const count = numbers.filter((number) => number == item).length;
+                        if (count > 1) {
+                            html += `<tr>
+                                <td>${index + 1}</td>
+                                <td>${item} (${count})</td>
+                            </tr>`;
+                        }
+
+                    });
+                    $("#sms_duplicates_number_list").html(html);
                 })
                 .catch(function(error) {
                     console.log(error);

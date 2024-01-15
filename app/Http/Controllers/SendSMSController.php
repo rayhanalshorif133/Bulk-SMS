@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Models\SMSLog;
+use App\Models\Balance;
 use App\Models\BulkSMSFile;
 use App\Http\Controllers\Api\ApiSendSMSController;
 use Yajra\DataTables\Facades\DataTables;
@@ -64,7 +65,37 @@ class SendSMSController extends Controller
 
     }
 
+    public function sendBulkSms(Request $request){
+        if(!$request->phone_csv_file_id){
+            flash()->addError('CSV file not found, please try again');
+            return redirect()->back();
+        }
+        $bulkSMSFile = BulkSMSFile::find($request->phone_csv_file_id);
+        $file = $bulkSMSFile->file_path;
+        $file = public_path($file);
+        $csv = array_map('str_getcsv', file($file));
+        $csv = explode("\r", $csv[0][0]);
+        $user = User::find($bulkSMSFile->user_id);
+        foreach($csv as $key => $value){
+            $addRequest = [
+                'text' => $bulkSMSFile->message,
+                'mobile_number' => $value,
+                'api_key' => $user->api_key,
+                'type' => 1,
+            ];
+
+            $request->request->add($addRequest);
+            $apiSendSMSController = new ApiSendSMSController();
+            $apiSendSMSController->sendSms($request);
+        }
+        $bulkSMSFile->status = 1;
+        $bulkSMSFile->save();
+        flash()->addSuccess('Bulk sms send successfully');
+        return redirect()->route('send-sms.index');
+    }
+
     public function csvInfoFetch($id){
+
         $bulkSMSFile = BulkSMSFile::find($id);
         $file = $bulkSMSFile->file_path;
         $file = public_path($file);
@@ -78,13 +109,16 @@ class SendSMSController extends Controller
         }
 
 
+        $getBalance = Balance::select()->where('user_id',$bulkSMSFile->user_id)->first();
+
+
         $data = [
-            'sms_balance' => 0,
+            'sms_balance' => $getBalance? $getBalance->balance : 0,
             'sms_uploaded_number' => count($csv),
             'sms_valid_number' => 0,
             'sms_invalid_number' => 0,
             'sms_duplicates_number' => count($duplicate),
-            'sms_cost' => 0,
+            'sms_cost' => count($csv),
             'numbers' => $csv,
         ];
         return $this->respondWithSuccess('Bulk sms file fetch successfully',$data);
