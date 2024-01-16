@@ -56,7 +56,7 @@
                                     {{-- bulk --}}
                                     <div class="tab-pane fade" id="bulk_sms" role="tabpanel">
                                         <div class="col-12 mb-3">
-                                            <label for="phone" class="form-label required">Phone Number (csv)</label>
+                                            <label for="phone" class="form-label required">Phone Number</label>
                                             <span id="phone_csv_file_input"></span>
                                         </div>
                                     </div>
@@ -108,7 +108,7 @@
 
         const bulkSMS = () => {
             const html =
-                `<input class="form-control" id="phone_csv_file" required type="file" name="phone_csv_file" accept=".csv, .txt"/>`;
+                `<input class="form-control" id="phone_csv_file" required type="file" name="phone_csv_file" accept=".csv, .txt, .xlsx"/>`;
             $("#phone_csv_file_input").html(html);
             $("#phone_input").html("");
             $("#sms_type").val("bulk");

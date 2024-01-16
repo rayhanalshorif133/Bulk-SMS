@@ -16,6 +16,7 @@ class CreateBulkSMSMsisdnsTable extends Migration
         Schema::create('bulk_s_m_s_msisdns', function (Blueprint $table) {
             $table->id();
             $table->foreignId('bulk_s_m_s_file_id')->constrained('bulk_s_m_s_files')->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('user_id')->constrained('users')->onUpdate('cascade')->onDelete('cascade');
             $table->string('api_key')->nullable();
             $table->string('sender_id')->nullable();
             $table->string('mobile_number')->nullable();

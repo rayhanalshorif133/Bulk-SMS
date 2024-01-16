@@ -41,6 +41,12 @@ $currentRoute = Route::currentRouteName();
         <div data-i18n="Analytics">SMS Logs</div>
       </a>
     </li>
+    <li class="menu-item @if( $currentRoute == 'send-sms.bulk-sms-file') active  @endif">
+        <a href="{{route('send-sms.bulk-sms-file')}}" class="menu-link">
+          <i class="menu-icon tf-icons bx bxs-file"></i>
+          <div data-i18n="Analytics">Bulk SMS File</div>
+        </a>
+      </li>
     <!-- Transactions -->
     <li class="menu-item @if( $currentRoute == 'credit.index') active  @endif">
       <a href="{{route('credit.index')}}" class="menu-link">

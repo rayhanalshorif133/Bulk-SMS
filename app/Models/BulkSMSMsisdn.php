@@ -11,6 +11,7 @@ class BulkSMSMsisdn extends Model
 
     protected $fillable = [
         'bulk_s_m_s_file_id',
+        'user_id',
         'api_key',
         'sender_id',
         'mobile_number',
@@ -19,4 +20,12 @@ class BulkSMSMsisdn extends Model
         'type',
         'created_date_time',
     ];
+
+    public function bulkSMSFile(){
+        return $this->belongsTo(BulkSMSFile::class);
+    }
+
+    public function user(){
+        return $this->belongsTo(User::class);
+    }
 }

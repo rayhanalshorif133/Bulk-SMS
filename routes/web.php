@@ -121,6 +121,9 @@ Route::middleware('auth')
             Route::post('/bulk-sms', [SendSMSController::class, 'sendBulkSms'])->name('bulk-sms-send');
             Route::get('/log', [SendSMSController::class, 'smsLog'])->name('log');
             Route::get('/log/{id}/fetch', [SendSMSController::class, 'fetchLog'])->name('log.fetch');
+
+            // bulk sms file
+            Route::get('/bulk-sms-file', [SendSMSController::class, 'bulkSmsFile'])->name('bulk-sms-file');
         });
 
     });

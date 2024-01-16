@@ -52,7 +52,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
 
     <link href="https://cdn.jsdelivr.net/npm/tom-select@2.3.1/dist/css/tom-select.css" rel="stylesheet">
-  
+
 
     <!-- Page CSS -->
 
@@ -62,10 +62,12 @@
     <!--! Template customizer & Theme config files MUST be included after core stylesheets and helpers.js in the <head> section -->
     <!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
     <script src="{{asset('assets/js/config.js')}}"></script>
+
+    @yield('style')
   </head>
 
-  
-        
+
+
     <body>
       <!-- Layout wrapper -->
     <div class="layout-wrapper layout-content-navbar">
@@ -80,10 +82,10 @@
 
           <!-- Content wrapper -->
           <div class="content-wrapper">
-            
+
             @yield('content')
 
-            
+
             <!-- / Content -->
 
             <!-- Footer -->

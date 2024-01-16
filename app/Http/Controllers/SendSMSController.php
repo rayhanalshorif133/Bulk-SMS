@@ -89,9 +89,10 @@ class SendSMSController extends Controller
         $findSenderInfo = SenderInfo::select()->where('user_id',$user->id)->first();
         foreach($csv as $key => $value){
             $bulkSMSMsisdn = new BulkSMSMsisdn();
+            $bulkSMSMsisdn->user_id = $user->id;
             $bulkSMSMsisdn->bulk_s_m_s_file_id = $bulkSMSFile->id;
             $bulkSMSMsisdn->api_key = $user->api_key;
-            $bulkSMSMsisdn->sender_id = $user->sender_id;
+            $bulkSMSMsisdn->sender_id = $findSenderInfo->sender_id;
             $bulkSMSMsisdn->mobile_number = $value;
             $bulkSMSMsisdn->message = $bulkSMSFile->message;
             $bulkSMSMsisdn->status = 0;
@@ -125,6 +126,9 @@ class SendSMSController extends Controller
         $bulkSMSFile = BulkSMSFile::find($id);
         $file = $bulkSMSFile->file_path;
         $file = public_path($file);
+        // get file extension
+        // $file_ext = $bulkSMSFile->file_type;
+        // return $this->respondWithSuccess('Bulk sms file fetch successfully',$file_ext);
         $csv = array_map('str_getcsv', file($file));
         $strpos = strpos($csv[0][0], "\r");
         if($strpos !== false){
@@ -135,7 +139,7 @@ class SendSMSController extends Controller
                 $csv[$key] = $value[0];
             }
         }
-        // return $this->respondWithSuccess('Bulk sms file fetch successfully',$csv);
+
         $duplicate = array();
 
         // find duplicate number of $csv file
@@ -178,6 +182,36 @@ class SendSMSController extends Controller
             }
         }
         return view('send-sms.log');
+    }
+
+    public function bulkSmsFile(){
+        if (request()->ajax()) {
+            if(Auth::user()->roles[0]->name == 'user'){
+                $query = BulkSMSMsisdn::orderBy('created_at', 'desc')
+                    ->where('user_id',Auth::user()->id)
+                    ->with('user')
+                    ->get();
+            }else{
+                $query = BulkSMSMsisdn::orderBy('created_at', 'desc')
+                    ->with('user')
+                    ->get();
+            }
+             return DataTables::of($query)
+             ->addIndexColumn()
+             ->rawColumns(['action'])
+             ->toJson();
+
+        }
+        if(Auth::user()->roles[0]->name == 'user'){
+            $total_send_sms = BulkSMSMsisdn::where('user_id',Auth::user()->id)->count();
+            $total_success_sms = BulkSMSMsisdn::where('user_id',Auth::user()->id)->where('status',1)->count();
+            $total_failed_sms = BulkSMSMsisdn::where('user_id',Auth::user()->id)->where('status',0)->count();
+        }else{
+            $total_send_sms = BulkSMSMsisdn::count();
+            $total_success_sms = BulkSMSMsisdn::where('status',1)->count();
+            $total_failed_sms = BulkSMSMsisdn::where('status',0)->count();
+        }
+        return view('send-sms.bulk-sms-file',compact('total_send_sms','total_success_sms','total_failed_sms'));
     }
 
     public function fetchLog($id){
