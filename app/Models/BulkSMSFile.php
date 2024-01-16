@@ -17,6 +17,7 @@ class BulkSMSFile extends Model
         'file_type',
         'message',
         'status',
+        'sms_count',
         'type',
         'created_date_time',
     ];

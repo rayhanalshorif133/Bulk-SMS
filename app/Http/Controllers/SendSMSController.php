@@ -48,6 +48,7 @@ class SendSMSController extends Controller
                     $bulkSMSFile = new BulkSMSFile();
                     $bulkSMSFile->user_id = $user->id;
                     $bulkSMSFile->file_name = $file_name;
+                    $bulkSMSFile->sms_count = $request->sms_count;
                     $bulkSMSFile->file_size = $request->phone_csv_file->getSize();
                     $bulkSMSFile->file_type = $request->phone_csv_file->extension();
                     $bulkSMSFile->file_path = '/bulk_sms_files/'.$file_name;
@@ -120,6 +121,7 @@ class SendSMSController extends Controller
                 $bulkSMSMsisdn->api_key = $user->api_key;
                 $bulkSMSMsisdn->sender_id = $findSenderInfo->sender_id;
                 $bulkSMSMsisdn->mobile_number = $value;
+                $bulkSMSMsisdn->sms_count = $bulkSMSFile->sms_count;
                 $bulkSMSMsisdn->message = $bulkSMSFile->message;
                 $bulkSMSMsisdn->status = 0;
                 $bulkSMSMsisdn->type = 1;
@@ -197,13 +199,14 @@ class SendSMSController extends Controller
             }
         }
 
+        $sms_cost = count($valid_number) * $bulkSMSFile->sms_count;
 
         $data = [
             'sms_balance' => $getBalance? $getBalance->balance : 0,
             'sms_uploaded_number' => count($GET_CSV),
             'sms_valid_number' => count($valid_number),
             'sms_invalid_number' => count($invalid_number),
-            'sms_cost' => count($valid_number),
+            'sms_cost' => $sms_cost,
             'numbers' => $GET_CSV,
         ];
         return $this->respondWithSuccess('Bulk sms file fetch successfully',$data);

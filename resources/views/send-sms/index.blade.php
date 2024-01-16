@@ -64,8 +64,12 @@
                                             </div>
                                         </div>
                                         <div class="col-12 mb-3">
-                                            <label for="message" class="form-label required">Message</label>
-                                            <textarea class="form-control" id="message" required name="message"></textarea>
+                                            <label for="message" class="form-label required">
+                                                Message (Total Character: <span id="total_character" style="color: #0644b8">0</span>)
+                                            </label>
+                                            <span style="margin-left: 10px">SMS Count: <span id="sms_count" class="badge bg-primary">0</span></span>
+                                            <textarea class="form-control" rows="3" id="message" required name="message"></textarea>
+                                            <input class="d-none" name="sms_count" id="sms_count_input_id" />
                                         </div>
                                         <div class="col-12 mb-3">
                                             <button type="submit" class="btn btn-sm btn-primary">Send SMS</button>
@@ -114,6 +118,7 @@
                     $("#sms_type").val("single");
                 }
             });
+            countCharacter();
         });
 
         const handleSmsType = () => {
@@ -124,6 +129,19 @@
             $(".bulk_sms_nav").click();
             bulkSMS();
             hanldleCSVFileInfo();
+        };
+
+        const countCharacter = () => {
+            $("#message").keyup(function() {
+                const message = $(this).val();
+                const total_character = message.length;
+                $("#total_character").html(total_character);
+
+                // count sms
+                const sms_count = Math.ceil(total_character / 140);
+                $("#sms_count").html(sms_count);
+                $("#sms_count_input_id").val(sms_count);
+            });
         };
 
 

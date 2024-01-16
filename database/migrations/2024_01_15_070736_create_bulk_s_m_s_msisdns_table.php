@@ -21,6 +21,7 @@ class CreateBulkSMSMsisdnsTable extends Migration
             $table->string('sender_id')->nullable();
             $table->string('mobile_number')->nullable();
             $table->longtext('message')->nullable();
+            $table->integer('sms_count')->nullable()->default(0);
             $table->tinyInteger('status')->enum(0,1)->defualt(0)->comment('0 for failed and 1 for success');
             $table->tinyInteger('type')->enum(1,2)->defualt(1)->comment('1 for portal and 2 for api');
             $table->dateTime('created_date_time')->defualt(now());

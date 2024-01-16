@@ -17,6 +17,7 @@ class BulkSMSMsisdn extends Model
         'mobile_number',
         'message',
         'status',
+        'sms_count',
         'type',
         'created_date_time',
     ];
