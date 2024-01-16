@@ -151,6 +151,8 @@
                     $("#sms_uploaded_number").html(data.sms_uploaded_number);
                     $("#sms_cost").html(data.sms_cost);
                     $("#sms_duplicates_number").html(data.sms_duplicates_number);
+                    $("#sms_valid_number").html(data.sms_valid_number);
+                    $("#sms_invalid_number").html(data.sms_invalid_number);
 
                     // get unique numbers
                     const unique_numbers = [...new Set(numbers)];

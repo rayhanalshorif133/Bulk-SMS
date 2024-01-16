@@ -14,6 +14,8 @@
                   <div class="modal-body">
                       <h6 class="h6">SMS Balance: <span id="sms_balance"></span></h6>
                       <h6 class="h6">Total Uploaded Number: <span id="sms_uploaded_number"></span></h6>
+                      <h6 class="h6">Total Valid Number: <span id="sms_valid_number"></span></h6>
+                        <h6 class="h6">Total Invalid Number: <span id="sms_invalid_number"></span></h6>
                       <h6 class="h6">Total Cost: <span id="sms_cost"></span></h6>
                       <div class="table-responsive text-nowrap">
                           <table class="table">

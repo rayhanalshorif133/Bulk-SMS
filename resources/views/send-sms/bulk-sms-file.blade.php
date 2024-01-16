@@ -42,7 +42,7 @@
                     <div class="col-md-2 mx-auto">
                         <div class="card mb-3">
                             <div class="card-body text-center flex">
-                                <h5 class="card-title">Total Failed:</h5>
+                                <h5 class="card-title">Total Pending:</h5>
                                 <span class="badge bg-label-primary">{{ $total_failed_sms }}</span>
                             </div>
                         </div>
@@ -144,7 +144,7 @@
                             if (row.status == 1) {
                                 status = '<span class="badge bg-label-success">Success</span>';
                             } else {
-                                status = '<span class="badge bg-label-danger">Failed</span>';
+                                status = '<span class="badge bg-label-danger">Pending</span>';
                             }
                             return status;
                         },

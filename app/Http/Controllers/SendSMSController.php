@@ -11,7 +11,7 @@ use App\Models\BulkSMSMsisdn;
 use App\Http\Controllers\Api\ApiSendSMSController;
 use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Support\Facades\Auth;
-
+use PhpOffice\PhpSpreadsheet\IOFactory;
 
 class SendSMSController extends Controller
 {
@@ -76,43 +76,58 @@ class SendSMSController extends Controller
         $bulkSMSFile = BulkSMSFile::find($request->phone_csv_file_id);
         $file = $bulkSMSFile->file_path;
         $file = public_path($file);
-        $csv = array_map('str_getcsv', file($file));
-        $strpos = strpos($csv[0][0], "\r");
-        if($strpos !== false){
-            $csv = explode("\r", $csv[0][0]);
+        $file_ext = $bulkSMSFile->file_type;
+        if($file_ext == 'xlsx'){
+            $GET_CSV = [];
+            // Exporter
+            $spreadsheet = IOFactory::load($file);
+
+            // Get the active sheet
+            $sheet = $spreadsheet->getActiveSheet();
+
+            $highestRow = $sheet->getHighestRow();
+            $highestColumn = $sheet->getHighestColumn();
+            // read a file
+            for ($row = 1; $row <= $highestRow; $row++) {
+                for ($col = 'A'; $col <= $highestColumn; $col++) {
+                    $cellValue = $sheet->getCell($col . $row)->getValue();
+                    $GET_CSV[] = (string)$cellValue;
+                }
+            }
         }else{
-            foreach($csv as $key => $value){
-                $csv[$key] = $value[0];
+            $csv = array_map('str_getcsv', file($file));
+            $strpos = strpos($csv[0][0], "\r");
+            $GET_CSV = [];
+            if($strpos !== false){
+                $csv = explode("\r", $csv[0][0]);
+            }else{
+                // array to 1 array
+                foreach($csv as $key => $value){
+                    if($key != 0){
+                        $csv[$key] = $value[0];
+                        $GET_CSV[] = $csv[$key];
+                    }
+                }
             }
         }
         $user = User::find($bulkSMSFile->user_id);
         $findSenderInfo = SenderInfo::select()->where('user_id',$user->id)->first();
-        foreach($csv as $key => $value){
-            $bulkSMSMsisdn = new BulkSMSMsisdn();
-            $bulkSMSMsisdn->user_id = $user->id;
-            $bulkSMSMsisdn->bulk_s_m_s_file_id = $bulkSMSFile->id;
-            $bulkSMSMsisdn->api_key = $user->api_key;
-            $bulkSMSMsisdn->sender_id = $findSenderInfo->sender_id;
-            $bulkSMSMsisdn->mobile_number = $value;
-            $bulkSMSMsisdn->message = $bulkSMSFile->message;
-            $bulkSMSMsisdn->status = 0;
-            $bulkSMSMsisdn->type = 1;
-            $bulkSMSMsisdn->created_date_time = now();
-            $bulkSMSMsisdn->save();
+        foreach($GET_CSV as $key => $value){
+            if($this->isValidBangladeshPhoneNumber($value)){
+                $bulkSMSMsisdn = new BulkSMSMsisdn();
+                $bulkSMSMsisdn->user_id = $user->id;
+                $bulkSMSMsisdn->bulk_s_m_s_file_id = $bulkSMSFile->id;
+                $bulkSMSMsisdn->api_key = $user->api_key;
+                $bulkSMSMsisdn->sender_id = $findSenderInfo->sender_id;
+                $bulkSMSMsisdn->mobile_number = $value;
+                $bulkSMSMsisdn->message = $bulkSMSFile->message;
+                $bulkSMSMsisdn->status = 0;
+                $bulkSMSMsisdn->type = 1;
+                $bulkSMSMsisdn->created_date_time = now();
+                $bulkSMSMsisdn->save();
 
-            // create log:start
-            $smsLog = new SMSLog();
-            $smsLog->user_id = $user->id;
-            $smsLog->status = 0;
-            $smsLog->api_key = $user->api_key;
-            $smsLog->sender_id = $findSenderInfo->sender_id;
-            $smsLog->message = $bulkSMSFile->message;
-            $smsLog->mobile_number = $value;
-            $smsLog->our_api = "https://msg.elitbuzz-bd.com/smsapi";
-            $smsLog->type = 3; // for Bulk sms
-            $smsLog->created_date_time = now();
-            $smsLog->save();
-            // create log:end
+                // create log:end
+            }
         }
         // $bulkSMSFile->status = 1;
         // $bulkSMSFile->save();
@@ -123,38 +138,82 @@ class SendSMSController extends Controller
     public function csvInfoFetch($id){
 
         $bulkSMSFile = BulkSMSFile::find($id);
+
+        if(!$bulkSMSFile){
+            return $this->respondWithError('Bulk sms file not found');
+        }
+
         $file = $bulkSMSFile->file_path;
         $file = public_path($file);
-        // get file extension
-        // $file_ext = $bulkSMSFile->file_type;
-        // return $this->respondWithSuccess('Bulk sms file fetch successfully',$file_ext);
-        $csv = array_map('str_getcsv', file($file));
-        $strpos = strpos($csv[0][0], "\r");
-        if($strpos !== false){
-            $csv = explode("\r", $csv[0][0]);
+        $file_ext = $bulkSMSFile->file_type;
+
+        if($file_ext == 'xlsx'){
+            $GET_CSV = [];
+            // Exporter
+            $spreadsheet = IOFactory::load($file);
+
+            // Get the active sheet
+            $sheet = $spreadsheet->getActiveSheet();
+
+            $highestRow = $sheet->getHighestRow();
+            $highestColumn = $sheet->getHighestColumn();
+            // read a file
+            for ($row = 1; $row <= $highestRow; $row++) {
+                for ($col = 'A'; $col <= $highestColumn; $col++) {
+                    $cellValue = $sheet->getCell($col . $row)->getValue();
+                    $GET_CSV[] = (string)$cellValue;
+                }
+            }
         }else{
-            // array to 1 array
-            foreach($csv as $key => $value){
-                $csv[$key] = $value[0];
+            $csv = array_map('str_getcsv', file($file));
+            $strpos = strpos($csv[0][0], "\r");
+            $GET_CSV = [];
+            if($strpos !== false){
+                $csv = explode("\r", $csv[0][0]);
+            }else{
+                foreach($csv as $key => $value){
+                    if($key != 0){
+                        $csv[$key] = $value[0];
+                        $GET_CSV[] = $csv[$key];
+                    }
+                }
             }
         }
 
-        $duplicate = array();
+
+
 
         // find duplicate number of $csv file
 
         $getBalance = Balance::select()->where('user_id',$bulkSMSFile->user_id)->first();
 
+        $valid_number = [];
+        $invalid_number = [];
+        foreach($GET_CSV as $key => $value){
+            if($this->isValidBangladeshPhoneNumber($value)){
+                $valid_number[] = $value;
+            }else{
+                $invalid_number[] = $value;
+            }
+        }
+
 
         $data = [
             'sms_balance' => $getBalance? $getBalance->balance : 0,
-            'sms_uploaded_number' => count($csv),
-            'sms_valid_number' => 0,
-            'sms_invalid_number' => 0,
-            'sms_cost' => count($csv),
-            'numbers' => $csv,
+            'sms_uploaded_number' => count($GET_CSV),
+            'sms_valid_number' => count($valid_number),
+            'sms_invalid_number' => count($invalid_number),
+            'sms_cost' => count($valid_number),
+            'numbers' => $GET_CSV,
         ];
         return $this->respondWithSuccess('Bulk sms file fetch successfully',$data);
+    }
+
+
+    function isValidBangladeshPhoneNumber($phoneNumber)
+    {
+        $pattern = '/^(\+?88|01)?\d{11}$/';
+        return preg_match($pattern, $phoneNumber);
     }
 
     public function smsLog(){
