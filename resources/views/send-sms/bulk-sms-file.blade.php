@@ -70,6 +70,7 @@
         </div>
         <!--/ Hoverable Table rows -->
     </div>
+@include('send-sms.showMessageModal')
 @endsection
 @push('script')
     <script>
@@ -114,7 +115,8 @@
                             if (length > 20) {
                                 message_20 = message_20 + " ...";
                                 message_20 = message_20 +
-                                    `<a href="#" class="mx-2" data-bs-toggle="modal" data-bs-target="#showMessageModal" onclick="handleShowMessage(${row.id})">See More</a>`
+                                    `<a href="#" class="mx-2" data-bs-toggle="modal" data-bs-target="#showMessageModal"
+                                    onclick="handleShowMessage(${row.id})">See More</a>`
                             }
                             return message_20;
 
@@ -167,7 +169,7 @@
 
 
         const handleShowMessage = (id) => {
-            axios.get(`/send-sms/log/${id}/fetch`)
+            axios.get(`/send-sms/bulk-sms-file/${id}/fetch`)
                 .then(function(res) {
                     const data = res.data.data;
                     $('#message_details_show').text(data.message);

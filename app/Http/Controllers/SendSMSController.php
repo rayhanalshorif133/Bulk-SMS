@@ -218,4 +218,9 @@ class SendSMSController extends Controller
         $SMSLog = SMSLog::find($id);
         return $this->respondWithSuccess('Send sms log fetch successfully',$SMSLog);
     }
+
+    public function fetchBulkSMSMsisdn($id){
+        $bulkSMSMsisdn = BulkSMSMsisdn::find($id);
+        return $this->respondWithSuccess('Bulk sms msisdn fetch successfully',$bulkSMSMsisdn);
+    }
 }
