@@ -24,7 +24,7 @@
                                     <option value="user" selected>User</option>
                                     <option value="admin">Admin</option>
                                 </select>
-                            
+
                             </div>
                         </div>
                         <div class="g-2 row">
@@ -37,7 +37,7 @@
                                 <input class="form-control" id="password_confirmation" name="password_confirmation" placeholder="Enter a password"/>
                             </div>
                         </div>
-                        
+
                         <div class="g-2 row">
                             <div class="col mb-3">
                                 <label for="update_user_api_key" class="form-label required">Api key</label>

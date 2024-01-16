@@ -109,16 +109,25 @@ class UserController extends Controller
             $user->name =  $request->name;
             $user->email =  $request->email;
             // check old password with current password
-            if($request->password && $request->password_confirmation)
+            if($request->password && $request->password_confirmation && $request->password == $request->password_confirmation)
             {
-                if(Hash::check($request->old_password, $user->password && $user->password == $request->password_confirmation)){
-                    $user->password = Hash::make($request->password);
-                }else{
-                    flash()->addError('Old password not match or new password and confirmation password not match');
-                    return redirect()->back();
-                }
+                $user->password = Hash::make($request->password);
+            }
+            else{
+                flash()->addError('New password and confirm password not matched');
+                return redirect()->back();
             }
             if($request->hasFile('logo')){
+
+                $validator = Validator::make($request->all(), [
+                    'logo' => 'image:jpeg,png,jpg',
+                ]);
+
+                if($validator->fails()) {
+                    flash()->addError($validator->errors()->first());
+                    return redirect()->back();
+                }
+
                 $file_name = time().'_'.$request->logo->getClientOriginalName();
                 $file = $request->file('logo');
                 $file->move(public_path('user_logo'),$file_name);

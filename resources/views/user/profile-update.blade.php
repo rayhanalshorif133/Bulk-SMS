@@ -36,8 +36,9 @@
                                         value="{{ Auth::user()->name }}" />
                                 </div>
                                 <div class="mt-2">
-                                    <label for="logo" class="form-label optional">Your Company Logo</label>
-                                    <input type="file" class="form-control" id="logo" name="logo" />
+                                    <label for="logo" class="form-label optional">Your Company Logo (200px * 200px)</label>
+                                    <input type="file" class="form-control" id="logo" name="logo" accept="image/jpeg, image/png" />
+                                    <small class="text-muted"><span class="text-danger mx-1">***</span>Accepted type png/jpeg</small>
                                 </div>
                                 <div class="mt-3">
                                     <label for="email" class="form-label required">Email</label>
@@ -47,28 +48,13 @@
                             </div>
                             <div class="tab-pane fade" id="navs-pills-top-password" role="tabpanel">
                                 <div class="mt-3">
-                                    <label for="old_password" class="form-label optional">Old Password</label>
-                                    <div class="input-group input-group-merge">
-                                        <input type="password" id="old_password"
-                                            class="form-control @error('old_password') is-invalid @enderror"
-                                            name="old_password" placeholder="Enter your old password"
-                                            aria-describedby="old_password" autocomplete="current-old_password" />
-                                        <span class="input-group-text cursor-pointer"><i class="bx bx-hide"></i></span>
-                                        @error('old_password')
-                                            <span class="invalid-feedback" role="alert">
-                                                <strong>{{ $message }}</strong>
-                                            </span>
-                                        @enderror
-                                    </div>
-                                </div>
-                                <div class="mt-3">
                                     <label for="password" class="form-label optional">Password</label>
                                     <div class="input-group input-group-merge">
                                         <input type="password" id="password"
                                             class="form-control @error('password') is-invalid @enderror" name="password"
                                             placeholder="Enter your new password" aria-describedby="password"
                                             autocomplete="current-password" />
-                                        <span class="input-group-text cursor-pointer"><i class="bx bx-hide"></i></span>
+                                        <span class="input-group-text cursor-pointer show_hide"><i class="bx bx-hide"></i></span>
                                         @error('password')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
@@ -84,7 +70,7 @@
                                             name="password_confirmation" placeholder="Enter your new password confirmation"
                                             aria-describedby="password_confirmation"
                                             autocomplete="current-password_confirmation" />
-                                        <span class="input-group-text cursor-pointer"><i class="bx bx-hide"></i></span>
+                                        <span class="input-group-text cursor-pointer show_hide"><i class="bx bx-hide"></i></span>
                                         @error('password_confirmation')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
@@ -102,4 +88,20 @@
     </div>
 @endsection
 @push('script')
+<script>
+    $(document).ready(function () {
+        // bx-hide
+        $(".show_hide").click(function () {
+            if ($(this).prev().attr("type") == "password") {
+                $(this).prev().attr("type", "text");
+                $(this).children().removeClass("bx-hide");
+                $(this).children().addClass("bx-show");
+            } else {
+                $(this).prev().attr("type", "password");
+                $(this).children().removeClass("bx-show");
+                $(this).children().addClass("bx-hide");
+            }
+        });
+    });
+</script>
 @endpush
