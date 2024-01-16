@@ -104,7 +104,6 @@ class SendSMSController extends Controller
             $smsLog = new SMSLog();
             $smsLog->user_id = $user->id;
             $smsLog->status = 0;
-            $smsLog->type = 1;
             $smsLog->api_key = $user->api_key;
             $smsLog->sender_id = $findSenderInfo->sender_id;
             $smsLog->message = $bulkSMSFile->message;

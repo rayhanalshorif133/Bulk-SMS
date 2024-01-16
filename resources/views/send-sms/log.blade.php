@@ -2,18 +2,18 @@
 
 @section('content')
 <div class="container-xxl flex-grow-1 container-p-y">
-            
-            
+
+
     <h4 class="py-3 mb-4">
       <span class="text-muted fw-light">Send SMS /</span> Log list
     </h4>
-    
-    
+
+
     <!-- Hoverable Table rows -->
     <div class="card">
       <div class="card-header">
             <h5 class="mt-2">SMS Log list</h5>
- 
+
       </div>
       <div class="table-responsive text-nowrap p-3">
         <table class="table table-hover w-full" id="smsLogTableId">
@@ -30,7 +30,7 @@
           </thead>
           <tbody class="table-border-bottom-0"></tbody>
         </table>
-        
+
       </div>
     </div>
     <!--/ Hoverable Table rows -->
@@ -58,7 +58,7 @@
                     },
                     {
                         render: function(data, type, row) {
-                          const sender_id = row.sender_id ? row.sender_id : "Not Set"; 
+                          const sender_id = row.sender_id ? row.sender_id : "Not Set";
                             return sender_id;
                         },
                         targets: 0,
@@ -71,7 +71,7 @@
                     },
                     {
                         render: function(data, type, row) {
-                          const message = row.message ? row.message : "Not Set"; 
+                          const message = row.message ? row.message : "Not Set";
 
                           // get 50 characters
                           var message_20 = message.substring(0, 20);
@@ -94,8 +94,10 @@
                            var type = "";
                            if(row.type == 1){
                             type = '<span class="badge bg-label-primary">Portal</span>';
-                           }else{
+                           }else if(row.type == 2){
                             type = '<span class="badge bg-label-info">API</span>';
+                           }else{
+                            type = '<span class="badge bg-label-warning">Bulk SMS</span>';
                            }
                             return type;
                         },
@@ -115,21 +117,21 @@
                     },
                     {
                         render: function(data, type, row) {
-                            const created_date_time = `<span> 
+                            const created_date_time = `<span>
                                 ${moment(row.created_date_time).format('HH:MM a')} </br>
-                                ${moment(row.created_date_time).format('Do MMM, YYYY')} 
+                                ${moment(row.created_date_time).format('Do MMM, YYYY')}
                                 </span>`;
-                            
+
                             return created_date_time;
                         },
                         targets: 0,
                     },
                 ]
             });
-            
+
 
         };
-        
+
 
         const handleShowMessage = (id) => {
           axios.get(`/send-sms/log/${id}/fetch`)
@@ -139,8 +141,8 @@
             });
         };
 
-        
-          
-        
+
+
+
   	</script>
 @endpush
