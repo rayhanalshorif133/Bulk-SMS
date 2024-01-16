@@ -27,49 +27,70 @@
                         @else
                             <input class="d-none" required name="user_id" value="{{ Auth::user()->id }}" />
                         @endrole
-                        <div class="col-xl-12">
-                            <div class="nav-align-top mb-4">
-                                <ul class="nav nav-pills mb-3" role="tablist">
-                                    <li class="nav-item" role="presentation">
-                                        <button type="button" class="nav-link active nav-button single_sms_nav"
-                                            role="tab" data-bs-toggle="tab" data-bs-target="#single_sms"
-                                            aria-controls="single_sms" aria-selected="true">Single SMS</button>
-                                    </li>
-                                    <li class="nav-item" role="presentation">
-                                        <button type="button" class="nav-link nav-button bulk_sms_nav" role="tab"
-                                            data-bs-toggle="tab" data-bs-target="#bulk_sms" aria-controls="bulk_sms"
-                                            aria-selected="false" tabindex="-1">Bulk SMS</button>
-                                    </li>
-                                </ul>
-                                <div class="tab-content">
-                                    <input class="d-none" required name="sms_type" value="single" id="sms_type" />
-                                    {{-- single --}}
-                                    <div class="tab-pane fade active show" id="single_sms" role="tabpanel">
-                                        <div class="col-12 mb-3">
-                                            <label for="phone" class="form-label required">Phone Number</label>
-                                            <span id="phone_input">
-                                                <input class="form-control" id="phone" required name="phone"
-                                                    value="8801" />
-                                            </span>
+
+                        <div class="row">
+                            <div class="col-xl-9">
+                                <div class="nav-align-top mb-4">
+                                    <ul class="nav nav-pills mb-3" role="tablist">
+                                        <li class="nav-item" role="presentation">
+                                            <button type="button" class="nav-link active nav-button single_sms_nav"
+                                                role="tab" data-bs-toggle="tab" data-bs-target="#single_sms"
+                                                aria-controls="single_sms" aria-selected="true">Single SMS</button>
+                                        </li>
+                                        <li class="nav-item" role="presentation">
+                                            <button type="button" class="nav-link nav-button bulk_sms_nav" role="tab"
+                                                data-bs-toggle="tab" data-bs-target="#bulk_sms" aria-controls="bulk_sms"
+                                                aria-selected="false" tabindex="-1">Bulk SMS</button>
+                                        </li>
+                                    </ul>
+                                    <div class="tab-content">
+                                        <input class="d-none" required name="sms_type" value="single" id="sms_type" />
+                                        {{-- single --}}
+                                        <div class="tab-pane fade active show" id="single_sms" role="tabpanel">
+                                            <div class="col-12 mb-3">
+                                                <label for="phone" class="form-label required">Phone Number</label>
+                                                <span id="phone_input">
+                                                    <input class="form-control" id="phone" required name="phone"
+                                                        value="8801" />
+                                                </span>
+                                            </div>
                                         </div>
-                                    </div>
-                                    {{-- bulk --}}
-                                    <div class="tab-pane fade" id="bulk_sms" role="tabpanel">
-                                        <div class="col-12 mb-3">
-                                            <label for="phone" class="form-label required">Phone Number</label>
-                                            <span id="phone_csv_file_input"></span>
+                                        {{-- bulk --}}
+                                        <div class="tab-pane fade" id="bulk_sms" role="tabpanel">
+                                            <div class="col-12 mb-3">
+                                                <label for="phone" class="form-label required">Phone Number</label>
+                                                <span id="phone_csv_file_input"></span>
+                                                <small class="text-danger">Upload CSV, TXT or XLSX file</small>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="col-12 mb-3">
-                                        <label for="message" class="form-label required">Message</label>
-                                        <textarea class="form-control" id="message" required name="message"></textarea>
-                                    </div>
-                                    <div class="col-12 mb-3">
-                                        <button type="submit" class="btn btn-sm btn-primary">Send SMS</button>
+                                        <div class="col-12 mb-3">
+                                            <label for="message" class="form-label required">Message</label>
+                                            <textarea class="form-control" id="message" required name="message"></textarea>
+                                        </div>
+                                        <div class="col-12 mb-3">
+                                            <button type="submit" class="btn btn-sm btn-primary">Send SMS</button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
+                            <div class="col-xl-3">
+                                <div class="d-flex">
+                                    <h4 class="mx-1 mt-1" style="color: #696CFF;font-size:16px">Bulk SMS File Example:</h4>
+                                    <a class="mx-1" style="color: #b84806" title="Download Bulk SMS Example Txt File"
+                                    href="{{ asset('assets/bulk_sms_example.txt') }}" download>
+                                        <i class='bx bxs-download'></i>
+                                    </a>
+                                </div>
+                                <hr/>
+                                <p style="color: #000000;font-size:14px">Phone Number:</p>
+                                <p style="color: #000000;font-size:14px">88017XXXXXXXX</p>
+                                <p style="color: #000000;font-size:14px">88019XXXXXXXX</p>
+                                <p style="color: #000000;font-size:14px">88018XXXXXXXX</p>
+                                <p style="color: #000000;font-size:14px">88016XXXXXXXX</p>
+                                <p style="color: #000000;font-size:14px">88015XXXXXXXX</p>
+                            </div>
                         </div>
+
                     </div>
                 </form>
             </div>
