@@ -23,7 +23,7 @@ class CreateSMSLogsTable extends Migration
             $table->string('our_api')->nullable();
             $table->string('our_api_response')->nullable();
             $table->tinyInteger('status')->enum(0,1)->defualt(0)->comment('0 for failed and 1 for success');
-            $table->tinyInteger('type')->enum(1,2)->defualt(1)->comment('1 for portal and 2 for api');
+            $table->tinyInteger('type')->enum(1,2,3)->defualt(1)->comment('1 for portal, 2 for api, 3 for bulk sms');
             $table->string('customer_response')->nullable();
             $table->dateTime('created_date_time')->defualt(now());
             $table->timestamps();

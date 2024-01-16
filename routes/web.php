@@ -51,17 +51,18 @@ Route::middleware('auth')
     ->group(function(){
 
         // user
+        Route::get('users/dashboard', [HomeController::class, 'index'])->name('user.dashboard');
+        Route::match(['get', 'post'], 'users/profile-update', [UserController::class, 'profileUpdate'])->name('user.profile-update');
         Route::name('user.')
-
-            ->prefix('users')->group(function () {
-            Route::get('/dashboard', [HomeController::class, 'index'])->name('dashboard');
-            Route::middleware('role')->get('/', [UserController::class, 'index'])->name('index');
-            Route::middleware('role')->get('/{id}/fetch', [UserController::class, 'fetch'])->name('fetch');
-
-            Route::middleware('role')->post('/', [UserController::class, 'create'])->name('create');
-            Route::middleware('role')->put('/', [UserController::class, 'update'])->name('update');
-            Route::middleware('role')->delete('/{id}', [UserController::class, 'delete'])->name('delete');
-            Route::middleware('role')->get('/key-generate', [UserController::class, 'keyGenerate'])->name('key-generate');
+        ->prefix('users')
+        ->middleware('role')
+        ->group(function () {
+            Route::get('/', [UserController::class, 'index'])->name('index');
+            Route::get('/{id}/fetch', [UserController::class, 'fetch'])->name('fetch');
+            Route::post('/', [UserController::class, 'create'])->name('create');
+            Route::put('/', [UserController::class, 'update'])->name('update');
+            Route::delete('/{id}', [UserController::class, 'delete'])->name('delete');
+            Route::get('/key-generate', [UserController::class, 'keyGenerate'])->name('key-generate');
         });
 
         // sender-info

@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\SMSLog;
 use App\Models\Balance;
 use App\Models\BulkSMSFile;
+use App\Models\BulkSMSMsisdn;
 use App\Http\Controllers\Api\ApiSendSMSController;
 use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Support\Facades\Auth;
@@ -75,22 +76,45 @@ class SendSMSController extends Controller
         $file = $bulkSMSFile->file_path;
         $file = public_path($file);
         $csv = array_map('str_getcsv', file($file));
-        $csv = explode("\r", $csv[0][0]);
-        $user = User::find($bulkSMSFile->user_id);
-        foreach($csv as $key => $value){
-            $addRequest = [
-                'text' => $bulkSMSFile->message,
-                'mobile_number' => $value,
-                'api_key' => $user->api_key,
-                'type' => 1,
-            ];
-
-            $request->request->add($addRequest);
-            $apiSendSMSController = new ApiSendSMSController();
-            $apiSendSMSController->sendSms($request);
+        $strpos = strpos($csv[0][0], "\r");
+        if($strpos !== false){
+            $csv = explode("\r", $csv[0][0]);
+        }else{
+            foreach($csv as $key => $value){
+                $csv[$key] = $value[0];
+            }
         }
-        $bulkSMSFile->status = 1;
-        $bulkSMSFile->save();
+        $user = User::find($bulkSMSFile->user_id);
+        $findSenderInfo = SenderInfo::select()->where('user_id',$user->id)->first();
+        foreach($csv as $key => $value){
+            $bulkSMSMsisdn = new BulkSMSMsisdn();
+            $bulkSMSMsisdn->bulk_s_m_s_file_id = $bulkSMSFile->id;
+            $bulkSMSMsisdn->api_key = $user->api_key;
+            $bulkSMSMsisdn->sender_id = $user->sender_id;
+            $bulkSMSMsisdn->mobile_number = $value;
+            $bulkSMSMsisdn->message = $bulkSMSFile->message;
+            $bulkSMSMsisdn->status = 0;
+            $bulkSMSMsisdn->type = 1;
+            $bulkSMSMsisdn->created_date_time = now();
+            $bulkSMSMsisdn->save();
+
+            // create log:start
+            $smsLog = new SMSLog();
+            $smsLog->user_id = $user->id;
+            $smsLog->status = 0;
+            $smsLog->type = 1;
+            $smsLog->api_key = $user->api_key;
+            $smsLog->sender_id = $findSenderInfo->sender_id;
+            $smsLog->message = $bulkSMSFile->message;
+            $smsLog->mobile_number = $value;
+            $smsLog->our_api = "https://msg.elitbuzz-bd.com/smsapi";
+            $smsLog->type = 3; // for Bulk sms
+            $smsLog->created_date_time = now();
+            $smsLog->save();
+            // create log:end
+        }
+        // $bulkSMSFile->status = 1;
+        // $bulkSMSFile->save();
         flash()->addSuccess('Bulk sms send successfully');
         return redirect()->route('send-sms.index');
     }
@@ -101,14 +125,19 @@ class SendSMSController extends Controller
         $file = $bulkSMSFile->file_path;
         $file = public_path($file);
         $csv = array_map('str_getcsv', file($file));
-        $csv = explode("\r", $csv[0][0]);
+        $strpos = strpos($csv[0][0], "\r");
+        if($strpos !== false){
+            $csv = explode("\r", $csv[0][0]);
+        }else{
+            // array to 1 array
+            foreach($csv as $key => $value){
+                $csv[$key] = $value[0];
+            }
+        }
+        // return $this->respondWithSuccess('Bulk sms file fetch successfully',$csv);
         $duplicate = array();
 
         // find duplicate number of $csv file
-        foreach($csv as $key => $value){
-            $duplicate[$value] = isset($duplicate[$value]) ? $duplicate[$value] + 1 : 1;
-        }
-
 
         $getBalance = Balance::select()->where('user_id',$bulkSMSFile->user_id)->first();
 
@@ -118,7 +147,6 @@ class SendSMSController extends Controller
             'sms_uploaded_number' => count($csv),
             'sms_valid_number' => 0,
             'sms_invalid_number' => 0,
-            'sms_duplicates_number' => count($duplicate),
             'sms_cost' => count($csv),
             'numbers' => $csv,
         ];

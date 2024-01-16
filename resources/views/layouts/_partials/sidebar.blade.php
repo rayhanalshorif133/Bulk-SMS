@@ -10,7 +10,7 @@ $currentRoute = Route::currentRouteName();
         <i class="fa-regular fa-envelope" style="font-size:3rem"></i>
       </span>
       <span class="app-brand-text demo menu-text fw-bolder ms-2 text-uppercase">
-        {{ config('app.name', 'Laravel') }}
+        BULK SMS
       </span>
     </a>
 
@@ -47,7 +47,7 @@ $currentRoute = Route::currentRouteName();
         <i class="menu-icon tf-icons bx bxs-bank"></i>
         <div data-i18n="Analytics">Transactions</div>
       </a>
-    </li> 
+    </li>
     @role('admin')
      <!-- Balance -->
      <li class="menu-item @if( $currentRoute == 'balance.index') active  @endif">
@@ -60,7 +60,7 @@ $currentRoute = Route::currentRouteName();
 
     <!-- Users -->
     <!-- Balance -->
-   
+
     <!-- sender info -->
     <li class="menu-item @if( $currentRoute == 'sender-info.index') active  @endif">
       <a href="{{route('sender-info.index')}}" class="menu-link">
@@ -68,11 +68,11 @@ $currentRoute = Route::currentRouteName();
         <div data-i18n="Analytics">Sender Infos</div>
       </a>
     </li>
-    
 
-   
-    
-    
+
+
+
+
     @role('admin')
     <li class="menu-item @if( $currentRoute == 'user.index') active  @endif">
       <a href="{{route('user.index')}}" class="menu-link">
@@ -87,7 +87,7 @@ $currentRoute = Route::currentRouteName();
         <div data-i18n="Analytics">Developer Settings</div>
       </a>
     </li>
-     
+
     @role('admin')
     <!-- Found -->
     <li class="menu-item @if( $currentRoute == 'fund.index') active  @endif">
@@ -97,6 +97,6 @@ $currentRoute = Route::currentRouteName();
       </a>
     </li>
     @endrole
-    
+
   </ul>
 </aside>

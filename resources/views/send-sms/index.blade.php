@@ -108,7 +108,7 @@
 
         const bulkSMS = () => {
             const html =
-                `<input class="form-control" id="phone_csv_file" required type="file" name="phone_csv_file" accept=".csv"/>`;
+                `<input class="form-control" id="phone_csv_file" required type="file" name="phone_csv_file" accept=".csv, .txt"/>`;
             $("#phone_csv_file_input").html(html);
             $("#phone_input").html("");
             $("#sms_type").val("bulk");

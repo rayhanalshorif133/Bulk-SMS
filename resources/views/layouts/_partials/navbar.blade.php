@@ -23,7 +23,7 @@
               <!-- /Search -->
 
               <ul class="navbar-nav flex-row align-items-center ms-auto">
-                
+
 
                 <!-- User -->
                 <li class="nav-item navbar-dropdown dropdown-user dropdown">
@@ -55,7 +55,13 @@
                     <li>
                       <div class="dropdown-divider"></div>
                     </li>
-                    
+                    <li>
+                        <a class="dropdown-item" href="{{ route('user.profile-update') }}">
+                              <i class='bx bxs-cog me-2'></i>
+                              <span class="align-middle">Update Profile</span>
+                          </a>
+                      </li>
+
                     <li>
                       <a class="dropdown-item" href="{{ route('logout') }}"
                             onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
