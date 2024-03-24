@@ -92,7 +92,6 @@ class BalanceController extends Controller
         $validator = Validator::make($request->all(), [
             'sender_info_id' => ['required'],
             'balance' => ['required'],
-            'amount' => ['required'],
             'expired_date' => ['required'],
             'modifyStatus' => ['required'],
         ]);
@@ -106,10 +105,9 @@ class BalanceController extends Controller
         
 
         try {
-            $balance = Balance::find( $request->id);
+            $balance = Balance::find($request->id);
             $balance->sender_info_id = $request->sender_info_id;
             $balance->balance = $request->balance;
-            $balance->amount = $request->amount;
             $balance->expired_at = $request->expired_date;
             $balance->status = $request->modifyStatus;
             $balance->save();

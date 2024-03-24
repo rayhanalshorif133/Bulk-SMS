@@ -16,9 +16,9 @@ class BulkSMSFile extends Model
         'file_size',
         'file_type',
         'message',
-        'status',
         'sms_count',
-        'type',
+        'valid_number',
+        'invalid_number',
         'created_date_time',
     ];
 }

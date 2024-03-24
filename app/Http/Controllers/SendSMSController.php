@@ -54,8 +54,6 @@ class SendSMSController extends Controller
                     $bulkSMSFile->file_path = '/bulk_sms_files/'.$file_name;
                     $file->move(public_path('bulk_sms_files'),$file_name);
                     $bulkSMSFile->message = $request->message;
-                    $bulkSMSFile->status = 0;
-                    $bulkSMSFile->type = 1;
                     $bulkSMSFile->created_date_time = now();
                     $bulkSMSFile->save();
                     return redirect('/send-sms/?type=bulk&bulk_sms_file_id='.$bulkSMSFile->id);
@@ -113,15 +111,28 @@ class SendSMSController extends Controller
         }
         $user = User::find($bulkSMSFile->user_id);
         $findSenderInfo = SenderInfo::select()->where('user_id',$user->id)->first();
+
+
+        // check balance:start
+        $getBalance = Balance::select()->where('user_id',$bulkSMSFile->user_id)->first();
+
+
+        $getBalance->balance = (int)$getBalance->balance - (int)$bulkSMSFile->sms_count;
+        $getBalance->save();
+
+
+        $par_sms_count = (int)$bulkSMSFile->valid_number / (int)$bulkSMSFile->sms_count;
+
+
         foreach($GET_CSV as $key => $value){
             if($this->isValidBangladeshPhoneNumber($value)){
                 $bulkSMSMsisdn = new BulkSMSMsisdn();
                 $bulkSMSMsisdn->user_id = $user->id;
                 $bulkSMSMsisdn->bulk_s_m_s_file_id = $bulkSMSFile->id;
-                $bulkSMSMsisdn->api_key = $user->api_key;
+                $bulkSMSMsisdn->api_key = $findSenderInfo->api_key;
                 $bulkSMSMsisdn->sender_id = $findSenderInfo->sender_id;
                 $bulkSMSMsisdn->mobile_number = $value;
-                $bulkSMSMsisdn->sms_count = $bulkSMSFile->sms_count;
+                $bulkSMSMsisdn->sms_count = $par_sms_count;
                 $bulkSMSMsisdn->message = $bulkSMSFile->message;
                 $bulkSMSMsisdn->status = 0;
                 $bulkSMSMsisdn->type = 1;
@@ -185,8 +196,8 @@ class SendSMSController extends Controller
 
 
 
-        // find duplicate number of $csv file
 
+        // check balance:start
         $getBalance = Balance::select()->where('user_id',$bulkSMSFile->user_id)->first();
 
         $valid_number = [];
@@ -200,6 +211,20 @@ class SendSMSController extends Controller
         }
 
         $sms_cost = count($valid_number) * $bulkSMSFile->sms_count;
+        $is_confirmed = false;
+
+        if($getBalance){
+            $is_confirmed = $getBalance->balance >= $sms_cost ? true : false;
+        }
+
+
+        $bulkSMSFile->valid_number = count($valid_number);
+        $bulkSMSFile->invalid_number = count($invalid_number);
+        $bulkSMSFile->sms_count = $sms_cost;
+        $bulkSMSFile->save();
+
+        // check balance:ending
+
 
         $data = [
             'sms_balance' => $getBalance? $getBalance->balance : 0,
@@ -208,6 +233,7 @@ class SendSMSController extends Controller
             'sms_invalid_number' => count($invalid_number),
             'sms_cost' => $sms_cost,
             'numbers' => $GET_CSV,
+            'is_confirmed' => $is_confirmed,
         ];
         return $this->respondWithSuccess('Bulk sms file fetch successfully',$data);
     }

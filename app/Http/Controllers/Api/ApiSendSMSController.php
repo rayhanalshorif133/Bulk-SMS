@@ -78,15 +78,19 @@ class ApiSendSMSController extends Controller
                 curl_close($curl);
 
 
-            // send sms:end 1003 error
 
 
 
 
             $smsLog = new SMSLog();
+            $sms = $request->text;
+
+            // get length of sms
+            $sms_length = strlen($sms);
+            $sms_count = ceil($sms_length/160);
+
             if(!is_numeric($response)){
-                // balance
-                $findBalance->balance = (int)$findBalance->balance - 1;
+                $findBalance->balance = (int)$findBalance->balance - (int)$sms_count;
                 $findBalance->save();
                 $customer_response = [
                     'code' => 200,
@@ -105,6 +109,7 @@ class ApiSendSMSController extends Controller
 
             $smsLog->user_id = $findUser->id;
             $smsLog->api_key = $request->api_key;
+            $smsLog->sms_count = $sms_count;
             $smsLog->sender_id = $findSenderInfo->sender_id;
             $smsLog->message = $request->text;
             $smsLog->mobile_number = $request->mobile_number;

@@ -164,6 +164,7 @@
             axios.get(`/send-sms/csv-info/${bulk_sms_file_id}/fetch`)
                 .then(function(response) {
                     const data = response.data.data;
+                    const is_confirmed = data.is_confirmed;
                     const numbers = data.numbers;
                     $("#sms_balance").html(data.sms_balance);
                     $("#sms_uploaded_number").html(data.sms_uploaded_number);
@@ -187,6 +188,14 @@
 
                     });
                     $("#sms_duplicates_number_list").html(html);
+
+                    if(is_confirmed == true){
+                        $("#confirmBtn").removeClass("d-none");
+                        $("#alert_low_balance").addClass("d-none");
+                    }else{
+                        $("#confirmBtn").addClass("d-none");
+                        $("#alert_low_balance").removeClass("d-none");
+                    }
                 })
                 .catch(function(error) {
                     console.log(error);

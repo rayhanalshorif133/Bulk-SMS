@@ -50,10 +50,8 @@
                                 <div class="mt-3">
                                     <label for="password" class="form-label optional">Password</label>
                                     <div class="input-group input-group-merge">
-                                        <input type="password" id="password"
-                                            class="form-control @error('password') is-invalid @enderror" name="password"
-                                            placeholder="Enter your new password" aria-describedby="password"
-                                            autocomplete="current-password" />
+                                        <input type="password" id="password" autocomplete="do-not-autofill" 
+                                            class="form-control" name="password" placeholder="Enter your new password" />
                                         <span class="input-group-text cursor-pointer show_hide"><i class="bx bx-hide"></i></span>
                                         @error('password')
                                             <span class="invalid-feedback" role="alert">
@@ -91,6 +89,8 @@
 <script>
     $(document).ready(function () {
         // bx-hide
+
+        
         $(".show_hide").click(function () {
             if ($(this).prev().attr("type") == "password") {
                 $(this).prev().attr("type", "text");

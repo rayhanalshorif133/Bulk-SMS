@@ -29,16 +29,16 @@
                             <label for="updateSmsBalance" class="form-label required">Balance (<small class="text-danger">Count of SMS</small>)</label>
                             <input class="form-control" id="updateSmsBalance" placeholder="Enter a balance" name="balance" type="number"/>
                         </div>
-                        <div class="col mb-3">
+                        {{-- <div class="col mb-3">
                             <label for="updateAmount" class="form-label required">Amount (<small class="text-danger">Taka</small>)</label>
                             <input class="form-control" id="updateAmount" placeholder="Enter a amount" name="amount" type="number"/>
-                        </div>
-                    </div>
-                    <div class="g-2 row">
+                        </div> --}}
                         <div class="col mb-3">
                             <label for="modifyExpiredDate" class="form-label required">Expired Date</label>
                             <input class="form-control" id="modifyExpiredDate" name="expired_date" type="date"/>
                         </div>
+                    </div>
+                    <div class="g-2 row">
                         <div class="col mb-3">
                             <label for="modifyStatus" class="form-label required">Status</label>
                             <select class="form-select" required name="modifyStatus" id="modifyStatus">
